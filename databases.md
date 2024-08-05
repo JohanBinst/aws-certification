@@ -1,16 +1,86 @@
-## Databases
+# AWS Cloud practinioner notes
+
+## 1. Cloud computing
+
+Different types of cloud computing
+
+## IAM - Identity and Access Management
+
+### Definitions
+root user
+IAM Users:
+IAM User Groups:
+IAM Policies
+IAM Roles
+
+### IAM Best practices
+
+### Shared responsibilty model
+
+## 2. EC2 - Elastic Compute Cloud
+
+## 3. Storage for EC2 Instance
+
+### EBS 
+
+### EFS
+
+## 4. ELB & ASG - Elastic Load Balancing & Auto Scaling Groups
+
+## 5. Amazon S3
+
+## 6. Databases & Analytics
 
 ### RDS (Relational Database Service)
 - [RDS](https://aws.amazon.com/rds/) - Managed relational database service that supports multiple database engines: MySQL, PostgreSQL, MariaDB, Oracle, SQL Server, and Aurora
 - suited for OLTP workloads: Online Transaction Processing
 
-### Aurora
+### RDS Deployments options
+#### 1. Read replicas
+- scale the read workload of your DB (in the same AZ)
+- can create oup to 15 read replicas
+- data is only written to the main DB
 
-### ElastiCache
+#### 2. Multi-AZ
+- failover DB in cas of AZ outage (high availability)
+- data is only read & written to the main database
+- can only have 1 other AZ as failover, failover is used only when main is down
+
+
+#### 3. Multi-Region (Read replicas)
+- Disater recovery in cas of region issue
+- local performance for global reads (application reads in db replica of nearest AZ)
+- write is done in main DB (1 AZ)
+- replication cost
+
+
+### Amazon Elasticache
+
+ElastiCache is to get managed Redis or Memcached in-memory databases with high performance and low latency.
+--> Helps to reduce the load of databases (RDS DB: Postgres, or other) for read intensive workloads by storing cache in in-memory database
+
+insert schema architecture
 
 ### DynamoDB
+keywords: serverless, low latency
 
-#### DynamoDB global tables
+- Fully managed highly available with replication across 3 AZ
+- NoSQL database -> not a relational database -> stores primary key and product pairs (cfr key value)
+- scales to massive worklaods because it is a distributes serverless database (no instances of the db are required)
+- millions of requests per sections, trillions of rows, 100s of TB of storage
+- single digit millisecond latency - low latency retrieval
+
+DynamoDB is a flagship product of AWS
+
+#### DynamoDB Global Tables
+DynamoDB Global Tables makes DynamoDB table accessible with low latency in multiple-regions by using Active-Active replciation
+2-way replication --> users can read and write in any table specific to the AZ
+
+insert schema architecture 
+
+### DynamoDB Accelerator - DAX
+- same as Elasticache but for `DynamoDB` only: in-memory cache for DynamoDB only
+- 10x performance improvement
 
 ### DAX
 - Amazon DynamoDB Accelerator (DAX) is a fully managed, highly available, in-memory cache for Amazon DynamoDB that delivers up to a 10 times performance improvement—from milliseconds to microseconds—even at millions of requests per second.
