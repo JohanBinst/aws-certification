@@ -1,0 +1,186 @@
+## Databases
+
+### RDS (Relational Database Service)
+- [RDS](https://aws.amazon.com/rds/) - Managed relational database service that supports multiple database engines: MySQL, PostgreSQL, MariaDB, Oracle, SQL Server, and Aurora
+- suited for OLTP workloads: Online Transaction Processing
+
+### Aurora
+
+### ElastiCache
+
+### DynamoDB
+
+#### DynamoDB global tables
+
+### DAX
+- Amazon DynamoDB Accelerator (DAX) is a fully managed, highly available, in-memory cache for Amazon DynamoDB that delivers up to a 10 times performance improvement—from milliseconds to microseconds—even at millions of requests per second.
+
+### Redshift
+- [Redshift](https://aws.amazon.com/redshift/) - Fully managed, petabyte-scale data warehouse service and analytics tool.
+- data is stored in colnmar format (columns instead of rows)
+- exam keywords: analytics, data warehouse, colunmar, OLAP
+- OLAP (Online Analytical Processing) is used for complex queries and data analysis
+
+#### Redshift serverless
+- [Redshift serverless](https://aws.amazon.com/redshift/serverless/) - Serverless data warehouse that automatically scales the datawarehouse based on the workload.
+- pay only for compute and storage used during analysis -> very cost efficient to run Redshift
+- use cases: reporting, dashboards, real-time analytics
+
+### Amazon EMR (Elastic MapReduce)
+- [Amazon EMR](https://aws.amazon.com/emr/) - helps creating Hadoop clusters to analyze and process large amounts of data (Big Data)
+- cluster can be made up of EC2 instances and EMR takes care of the provisioning and configuration of the cluster
+- automatically scales the cluster based on the workload
+- supports Apache Spark, HBasem Presto, Flink, and other big data frameworks
+- exam keywords: Hadoop clusters, Big Data, data processing
+
+### Amazon Athena
+
+- [Amazon Athena](https://aws.amazon.com/athena/) - serverless query service that makes it easy to analyze data in Amazon S3 using standard SQL
+- S3 objects supported are CSV, JSON, ORC, Avro, and Parquet (built on Presto)
+- no need to set up or manage any infrastructure
+- use cases: Business intelligence, analytics, reportingm ELB Logs, CloudTrail Logs, VPC Flow Logs
+- Amazon QuickSight can be used to visualize the data
+- pricing: $5 per TB of data scanned
+- cost saving: use compressed or columnar data formats(Parquet, ORC) to reduce the amount of data scanned
+
+exam keywords: analyze data in S3, serverless, SQL
+
+### Amazon QuickSight
+
+- [Amazon QuickSight](https://aws.amazon.com/quicksight/) - Serverless machine learning-powered Business Intelligence tool that allows you to create interactive dashboards and reports
+- integrates with AWS services like RDS, Redshift, Athena, Aurora and S3
+- pay per session or per user
+- exam keywords: Business Intelligence, dashboards, reports, machine learning
+
+### Neptune
+- [Neptune](https://aws.amazon.com/neptune/) - Fully managed graph database service that supports both RDF and property graph models
+- use cases: social networking, fraud detection, recommendation engines, network security, knowledge graphs (Wikipedia)
+- exam keywords: graph database, RDF, property graph
+- build and rund applications working with highly connected datasets - optimized for these complex and hard querries
+- highly available with replication across 3 AZs
+
+### TimeStream
+- [TimeStream](https://aws.amazon.com/timestream/) - Fully managed, serverless, time-series database service for IoT and operational applications
+- optimized for IoT and operational applications
+- store and analyze trillions of events per day at 1/10th the cost of relational databases
+- exam keywords: time-series data, IoT, operational applications
+
+### QLDB
+- [QLDB](https://aws.amazon.com/qldb/) - Fully managed ledger database that provides a transparent, immutable, and cryptographically verifiable transaction log
+- Quantun Ledger Database
+- A ledger is a record of (financial) transactions
+- immutable system: no entry can be removed or modified
+- cryptographically verifiable: you can verify the integrity of the data -> because of the cryptographic hash of the data after each transaction
+- difference with Amazon Managed Blockchain: QLDB is a ledger database, not a blockchain and it is not decentralized (all data is stored at AWS) -> in accordance with financial regulations
+- manipulate data using PartiQL (SQL-compatible query language)
+- 2-3x faster than common ledger blockchain frameworks
+- exam keywords: ledger database, financial transactions, (immutable, cryptographically verifiable)
+
+### Managed Blockchain
+- [Managed Blockchain](https://aws.amazon.com/managed-blockchain/) - Create and manage scalable blockchain networks using popular open-source frameworks: Hyperledger Fabric and Ethereum
+- join public blockhain networks or create your own private blockchain networks
+- exam keywords: blockchain, Hyperledger Fabric, Ethereum
+
+### Glue
+- [Glue](https://aws.amazon.com/glue/) - Fully managed extract, transform, and load (ETL) service that makes it easy to prepare and load your data for analytics
+- fully serverless
+- exam keywords: ETL, extract, transform, load
+- use case example: EXTRACT data from S3 and RDS -> TRANSFORM data with Glue script -> LOAD data into Redshift
+
+#### Glue Data Catalog
+- [Glue Data Catalog](https://aws.amazon.com/glue/features/catalog/) - Fully managed metadata repository that makes it easy to discover, search, and query metadata across your data lake and data warehouse
+- catalog of datasets in AWS structure
+- can be used with Athena, Redshift, EMR, and other services to build schemas for data
+- probably not on exam
+
+### DMS (Database Migration Service)
+- [DMS](https://aws.amazon.com/dms/) - Migrate your databases to AWS with minimal downtime
+- supports homogeneous migrations (Oracle to Oracle) and heterogeneous migrations (Microsoft SQL to Aurora)
+- Quickly and securly migrate databases to AWS
+- Source database remains available during the migration
+- exam keywords: database migration
+
+
+### Overview
+- Relational Databases: RDS and Aurora
+  - Difference between multi-AZ, read replicas, multi-region
+- In-memory Database: ElastiCache
+- Key/Value Database: DynamoDB (serverless) & DAX (cache for DynamoDB) if cache is needed
+- Data Warehouse or OLAP: Redshift(SQL)
+- Hadoop Cluster: EMR
+- Athena: query data on Amazon S3 (serverless & SQL)
+- Quicksight: dashboards and visualization of data (serverless)
+- DocumentDB: "Aurora of MongoDB" (JSON type of datasets - NoSQL database)
+- Amazon QLDB: Financial transactions ledger (immutable journal, cryptographically verifiable): centralized!
+- Amazon Managed Blockchain: managed Hyperledger Fabric and Ethereum blockchains
+- Glue: Managed ETL (Extract, Transform, Load) and Data Catalog service
+- DMS: Database Migration Service
+- Neptune: Graph database
+- TimeStream: Time-series database
+
+## Other compute services: ECS, lambda, Batch and Lightsail
+
+### ECS (Elastic Container Service)
+- [ECS](https://aws.amazon.com/ecs/) - Highly scalable, high-performance container orchestration service that supports Docker containers
+- ECS is a container management service that makes it easy to run, stop, and manage Docker containers on a cluster
+- You must provision the infrastructure (EC2 instances) that run the containers
+
+### Fargate
+- [Fargate](https://aws.amazon.com/fargate/) - Serverless compute engine for containers that works with both ECS and EKS
+- With Fargate, you no longer have to provision, configure, or scale clusters of virtual machines to run containers --> fully serverless
+
+### ECR (Elastic Container Registry)
+- [ECR](https://aws.amazon.com/ecr/) - Fully managed Docker container registry that makes it easy to store, manage, and deploy Docker container images
+- Private Docker container registry on AWS
+
+### Lambda
+- [Lambda](https://aws.amazon.com/lambda/) - Serverless compute service that lets you run code without provisioning or managing servers
+- Lambda runs your code only when needed and scales automatically
+- Functions are triggered by events -> event driven : S3 upload, DynamoDB update, API Gateway request
+- Pioneer of serverless computing on AWS
+- Supports multiple programming languages: Node.js, Python, Ruby, Java, Go, .NET
+- Pricing:
+  - pay per request (number of invocations)
+  - compute time (GB-seconds) = memory in GB provisioned * total runtime in seconds
+- Easy monitoring with CloudWatch Logs
+- use cases:
+  - create thumbnails from images uploaded to S3
+  - run serverless CRON jobs
+- exam keywords: serverless, event-driven, functions
+
+### API Gateway
+- [API Gateway](https://aws.amazon.com/api-gateway/) - Fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs at any scale
+- Create serverless RESTful APIs and WebSocket APIs
+- Integrates with Lambda, DynamoDB, and other AWS services
+- Proxies requests from endpoint to other services. Eg: Allow users to upload files to S3 or access data in DynamoDB or trigger Lambda functions from HTTP requests
+- exam keywords: serverless RESTful APIs, WebSocket APIs
+
+### Batch
+- [Batch](https://aws.amazon.com/batch/) - Fully managed batch processing at any scale
+- Is not serverless, relies on EC2 instances
+- Batch computing is the processing of a large amount of data in a programmatic way
+
+#### Batch vs. Lambda
+- Lambda is serverless, Batch is not
+- Lambda is event-driven, Batch is not
+- Lambda has limited runtime (15 minutes), Batch can run for hours or days
+- Lambda has limited storage (512MB), Batch can use EBS volumes
+- Lambda is for small, short-lived functions, Batch is for long-running batch jobs
+
+### Lightsail
+- [Lightsail](https://aws.amazon.com/lightsail/) - Virtual private server (VPS) service that offers everything needed to build an application or website
+- For people with no cloud experience
+- low and predictable pricing
+- use cases:
+  - simple websites: Wordpress, Joomla, Drupal
+  - Dev/Test environments
+  - simple webapps: has templates for MEAN, LAMP, Nginx, Node.js
+
+### Overview
+- ECS: Run Docker containers on EC2 instances (not serverless)
+- Fargate: Serverless compute engine for containers
+- ECR: Docker container registry for storing, managing, and deploying Docker container images
+- Lambda: Serverless compute service
+- API Gateway: Serverless RESTful APIs
+- Batch: Run batch jobs on AWS using EC2 instances (not serverless)
+- Lightsail: Virtual private server (VPS) service
