@@ -21,7 +21,7 @@ IAM Roles
 
 ## 3. Storage for EC2 Instance
 
-### EBS 
+### EBS
 
 ### EFS
 
@@ -76,7 +76,7 @@ DynamoDB is a flagship product of AWS
 DynamoDB Global Tables makes DynamoDB table accessible with low latency in multiple-regions by using Active-Active replciation
 2-way replication --> users can read and write in any table specific to the AZ
 
-insert schema architecture 
+insert schema architecture
 
 ### DynamoDB Accelerator - DAX
 - same as Elasticache but for `DynamoDB` only: in-memory cache for DynamoDB only
@@ -254,3 +254,49 @@ exam keywords: analyze data in S3, serverless, SQL
 - API Gateway: Serverless RESTful APIs
 - Batch: Run batch jobs on AWS using EC2 instances (not serverless)
 - Lightsail: Virtual private server (VPS) service
+
+## Deployments
+
+### CloudFormation
+- [CloudFormation](https://aws.amazon.com/cloudformation/) - Infrastructure as Code (IaC) service that helps you model and set up your AWS resources so you can spend less time managing those resources and more time focusing on your applications
+- CloudFormation templates are written in YAML or JSON
+- exam keywords: Infrastructure as Code, templates, YAML, JSON
+
+### Elastic Beanstalk
+- [Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/) - Platform as a Service (PaaS) that allows you to deploy and manage web applications and services
+- Supports multiple programming languages: Java, .NET, PHP, Node.js, Python, Ruby, Go, Docker
+- You upload your code and Elastic Beanstalk automatically handles the deployment, from capacity provisioning, load balancing, and auto-scaling to application health monitoring
+- exam keywords: PaaS, multiple programming languages
+
+### CodeDeploy
+- [CodeDeploy](https://aws.amazon.com/codedeploy/) - Automates code deployments to any instance, including Amazon EC2 instances and instances running on-premises
+- exam keywords: code deployments, hybrid(On-premises and AWS)
+
+### Systems Manager (SSM)
+- [Systems Manager](https://aws.amazon.com/systems-manager/) - Gives you visibility and control of your infrastructure on AWS
+- Patch, configure and run commands at scale (at multiple instances at the same time)
+- exam keywords: patching, configuration, automation
+
+#### SSM Session Manager
+- [SSM Session Manager](https://aws.amazon.com/systems-manager/features/#Session_Manager) - Provides a secure and auditable instance management
+- No need for SSH keys, bastion hosts, or open inbound ports
+- exam keywords: secure, auditable, instance management
+
+#### SSM Parameter Store
+- [SSM Parameter Store](https://aws.amazon.com/systems-manager/features/#Parameter_Store) - Securely store configuration data and secrets
+- exam keywords: secure, configuration, secrets
+
+## Developer services
+### CodeCommit
+- [CodeCommit](https://aws.amazon.com/codecommit/) - Fully managed source control service that makes it easy for teams to host secure and highly scalable private Git repositories
+- exam keywords: source control, Git
+- No longer supported in the future
+
+### CodeBuild
+- [CodeBuild](https://aws.amazon.com/codebuild/) - Fully managed build service that compiles source code, runs tests, and produces software packages that are ready to deploy
+- exam keywords: build service, compile, tests
+
+### CodePipeline
+- [CodePipeline](https://aws.amazon.com/codepipeline/) - Continuous integration and continuous delivery (CI/CD) service for fast and reliable application and infrastructure updates
+- from code commit to build to deployment
+- exam keywords: CI/CD, continuous integration, continuous delivery
