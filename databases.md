@@ -260,12 +260,27 @@ exam keywords: analyze data in S3, serverless, SQL
 ### CloudFormation
 - [CloudFormation](https://aws.amazon.com/cloudformation/) - Infrastructure as Code (IaC) service that helps you model and set up your AWS resources so you can spend less time managing those resources and more time focusing on your applications
 - CloudFormation templates are written in YAML or JSON
-- exam keywords: Infrastructure as Code, templates, YAML, JSON
+- repeat architecture in different environments, regions or AWS accounts
+- exam keywords: Infrastructure as Code, templates, YAML, JSON,
+
+## CDK (Cloud Development Kit)
+- [CDK](https://aws.amazon.com/cdk/) - Software development framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation
+- Define cloud infrastructre through code (Python, TypeScript, Java, C#)
+- Code is then synthesized into CloudFormation templates
+- Deploy infrastructure and application runtime together
+- Great of Lambda functions or Docker containers in ECS / EKS
+- exam keywords: Infrastructure as Code, CloudFormation, Python, TypeScript, Java, C#
 
 ### Elastic Beanstalk
 - [Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/) - Platform as a Service (PaaS) that allows you to deploy and manage web applications and services
 - Supports multiple programming languages: Java, .NET, PHP, Node.js, Python, Ruby, Go, Docker
-- You upload your code and Elastic Beanstalk automatically handles the deployment, from capacity provisioning, load balancing, and auto-scaling to application health monitoring
+- Platform as a Service (PaaS)
+- You upload your code and Elastic Beanstalk automatically handles the deployment using the architecture model you choose
+- Health monitoring is also built-in (health agent pushes metrics to CloudWatch)
+- 3 architecture models:
+  - Single instance : good for dev environments
+  - ELB + ALB : great for web applications
+  - ALB only : good for workers, microservices
 - exam keywords: PaaS, multiple programming languages
 
 ### CodeDeploy
@@ -300,3 +315,246 @@ exam keywords: analyze data in S3, serverless, SQL
 - [CodePipeline](https://aws.amazon.com/codepipeline/) - Continuous integration and continuous delivery (CI/CD) service for fast and reliable application and infrastructure updates
 - from code commit to build to deployment
 - exam keywords: CI/CD, continuous integration, continuous delivery
+
+## 12 Global appplications
+
+### Route 53
+- [Route 53](https://aws.amazon.com/route53/) - Scalable Domain Name System (DNS) web service
+- routing policies:
+  - simple : one record with multiple IP addresses (no health checks)
+  - failover : primary and secondary record (health checks)
+  - latency-based : direct users to the region with the lowest latency (health checks)
+  - weighted : split traffic based on pre-defined weights (health checks)
+- exam keywords: DNS, latency-based routing, failover routing
+
+### CloudFront
+- [CloudFront](https://aws.amazon.com/cloudfront/) - Content Delivery Network (CDN) service that securely delivers data, videos, applications, and APIs to customers globally with low latency and high transfer speeds
+- Replicate part of your application or S3 bucket content to edge locations - decrease latency
+- Cache content of frequent requests at edge locations - improved user experience by decreasing latency
+- exam keywords: CDN, edge locations, low latency
+
+#### Cloudfront vs S3 Cross Region Replication
+- CloudFront:
+  - caches content at edge locations to decrease latency
+  - great for static content that needs to be available everywhere
+- S3 Cross Region Replication:
+  - replicates all data to another region for disaster recovery
+  - great for dynamic content that needs to be available in another region
+
+##3 S3 Transfer Acceleration
+- [S3 Transfer Acceleration](https://aws.amazon.com/s3/features/#Transfer_Acceleration) - Speeds up transferring files to and from Amazon S3 using the AWS CloudFront globally distributed edge locations
+- exam keywords: S3, CloudFront, edge locations
+
+##3 AWS Global Accelerator
+- [AWS Global Accelerator](https://aws.amazon.com/global-accelerator/) - Improve global application availability and performance AWS global network
+- traffic is routed to the nearest AWS edge location and then to the application (can be running in a different region)
+- exam keywords: availability, performance, local, global
+
+#### CloudFront vs Global Accelerator
+Both use edge locations to decrease latency and protection against DDoS attacks
+- CloudFront:
+  - caches content at edge locations to decrease latency
+  - great for static content that needs to be available everywhere
+- Global Accelerator:
+  - no caching: routes traffic to the nearest AWS edge location and then to the application
+  - improves global application availability and performance
+
+### AWS Outposts
+- [AWS Outposts](https://aws.amazon.com/outposts/) - Fully managed service that extends AWS infrastructure, AWS services, APIs, and tools to virtually any datacenter, co-location space, or on-premises facility for a truly consistent hybrid experience
+- AWS provides servers, storage, and networking equipment to run AWS services on-premises
+- benfits: low latency, local data processing, data residency, and seamless integration with AWS services
+- exam keywords: hybrid, on-premises, consistent
+
+### AWS Wavelength
+- [AWS Wavelength](https://aws.amazon.com/wavelength/) - Deliver ultra-low latency applications for 5G devices using AWS compute and storage at the edge of the 5G network
+- AWS Wavelength embeds AWS compute and storage services at the edge of telecommunications providers' 5G networks
+- Goal: reduce latency for 5G applications
+- exam keywords: ultra-low latency, 5G, edge
+
+### AWS Local Zones
+- [AWS Local Zones](https://aws.amazon.com/localzones/) - AWS infrastructure deployment that places compute, storage, database, and other select services closer to large population, industry, and IT centers
+- Extend AWS region to a Local Zone in a specific geographic location so you can run applications that require single-digit millisecond latency directly at the Local Zone
+- exam keywords: latency-sensitive, large population, industry centers
+
+### Global application architecture
+- Single Region + single AZ :
+  - low availability
+  - low latency
+  - low difficulty
+
+- Single Region + multiple AZs :
+  - high availability
+  - low latency
+  - medium difficulty
+
+- Multi-Region - Active/Passive :
+  - high availability
+  - medium latency
+  - higher difficulty
+
+- Multi-Region - Active/Active :
+  - high availability
+  - low latency
+  - highest difficulty
+
+## 13 Cloud Integrations
+
+### SQS (Simple Queue Service)
+- [SQS](https://aws.amazon.com/sqs/) - Fully managed message queuing service that enables you to decouple and scale microservices, distributed systems, and serverless applications
+- exam keywords: message queuing, decouple, microservices
+
+### SNS (Simple Notification Service)
+- [SNS](https://aws.amazon.com/sns/) - Fully managed messaging service for both application-to-application and application-to-person communication
+- exam keywords: messaging service, application-to-application, application-to-person, topics
+
+### Kinesis
+- [Kinesis](https://aws.amazon.com/kinesis/) - Fully managed service for real-time processing of streaming data at massive scale
+- exam keywords: real-time processing, streaming data
+
+### Amazon MQ
+- [Amazon MQ](https://aws.amazon.com/amazon-mq/) - Managed message broker service for Apache ActiveMQ and RabbitMQ that makes it easy to set up and operate message brokers in the cloud
+- exam keywords: message broker, Apache ActiveMQ, RabbitMQ
+
+## 14 Cloud Monitoring
+
+### CloudWatch Metrics & Alarms
+- [CloudWatch](https://aws.amazon.com/cloudwatch/) - Monitor AWS resources and applications in real-time
+- CloudWatch Metrics: collect and track metrics, monitor log files, set alarms
+- CloudWatch Alarms: send notifications or take actions based on defined rules
+- exam keywords: monitoring, metrics, alarms
+
+### CloudWatch Logs
+- [CloudWatch Logs](https://aws.amazon.com/cloudwatch/) - Monitor, store, and access log files from Amazon EC2 instances, AWS CloudTrail, Route 53, and other sources
+- exam keywords: log files, monitoring
+
+### EventBridge
+- [EventBridge](https://aws.amazon.com/eventbridge/) - Serverless event bus that makes it easy to connect applications together using data from your own applications, integrated SaaS applications, and AWS services
+- default event bus: receive events from AWS services
+- partner event bus: receive events from SaaS applications (AWS parntners: Zendesk, Datadog, PagerDuty)
+- custom event bus: receive events from your own applications
+- ex: Cron jobs, S3 uploads, CodePipeline, CloudWatch Alarms trigger events that are sent to EventBridge and then to Lambda functions or other services
+- exam keywords: serverless, event bus
+
+### CloudTrail
+- [CloudTrail](https://aws.amazon.com/cloudtrail/) - Record API calls for your account and delivers log files to you
+- CloudTrail is enabled by default
+- log files can be stored in S3 or CloudWatch Logs
+- exam keywords: API calls, log files, tracking activity
+
+### X-Ray
+- [X-Ray](https://aws.amazon.com/xray/) - Analyze and debug distributed applications in production or under development
+- allows you to trace requests from beginning to end with a visual map and latency data
+- troubleshooting performance issues (latency, errors)
+- exam keywords: analyze, debug, distributed applications
+
+### Amazon CodeGuru
+- [Amazon CodeGuru](https://aws.amazon.com/codeguru/) - Automated code reviews and application performance recommendations
+- like: SonarQube, Checkmarx, Lint
+- ML-powered powered service that helps you write better code and troubleshoot issues
+- 2 components:
+  - CodeGuru Reviewer: automated code reviews
+  - CodeGuru Profiler: application performance recommendations: eg. reduce CPU usage, remove unused code
+- exam keywords: code reviews, performance recommendations
+
+### AWS Health Dashboard
+- [AWS Health Dashboard](https://status.aws.amazon.com/) - Provides alerts and remediation guidance for AWS services
+- provides alerts and remediation guidance when AWS is experiencing events that may impact you
+- exam keywords: alerts, remediation guidance
+
+## VPC - Virtual Private Cloud
+
+### VPC
+- [VPC](https://aws.amazon.com/vpc/) - Virtual network that you create in an AWS region
+- exam keywords: virtual network, region
+
+### Subnets
+- [Subnets](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html) - Range of IP addresses in your VPC
+- subnets can be public or private
+- subnets are defined per AZ
+- subnets can be associated with route tables
+- internet gateway is required for public subnets
+- NAT gateway (AWS managed) or NAT instance (self managed) is required for private subnets to access the internet while remaining private(outbound only)
+- exam keywords: IP addresses, public, private, AZ
+
+### NACLs
+- [NACLs](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) - Act as a firewall for associated subnets, controlling inbound and outbound traffic
+- NACLs are stateless: return traffic is not automatically allowed
+- can have allow and deny rules
+- are attached at the Subnet level
+- exam keywords: firewall, inbound, outbound, stateless, subnet
+
+### Security Groups
+- [Security Groups](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html) - Act as a firewall for associated EC2 instances, controlling inbound and outbound traffic
+- Security Groups are stateful: return traffic is automatically allowed, regardless of any rules
+- can have allow rules only
+- are attached at the EC2 instance level
+- exam keywords: firewall, inbound, outbound, stateful, EC2 instance
+
+### VPC Flow Logs
+- [VPC Flow Logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html) - Capture information about the IP traffic going to and from network interfaces in your VPC
+- VPC flow log, subnet flow log or Elastic Network Interface (ENI) flow log
+- Help, monitor and troubleshoot connectivity issues in your VPC
+- VPC Flow Logs can be published to CloudWatch Logs, S3, or Kinesis Data Firehose
+- captures network information from AWS managed interfaces (eg. RDS, ElastiCache), Elastic Load Balancers, ENI's, etc.
+- exam keywords: IP traffic, network interfaces, monitor, troubleshoot
+
+### VPC Peering
+- [VPC Peering](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html) - Connect two VPCs to route traffic between them using private IP addresses, so they behave as if they are on the same network
+- Must not have overlapping CIDR blocks (IP ranges)
+
+### VPC Endpoints
+- [VPC Endpoints](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints.html) - Enables you to privately connect your VPC to supported AWS services and VPC endpoint services powered by PrivateLink without requiring an internet gateway, NAT device, VPN connection, or AWS Direct Connect connection
+- VPC Enpoint Gateway: S3 and DynamoDB only
+- VPC Endpoint Interface: rest of the services
+- exam keywords: private connection, VPC, AWS services
+
+### PrivateLink
+- [PrivateLink](https://docs.aws.amazon.com/vpc/latest/userguide/endpoint-service.html) - Enables you to privately connect your VPC to services hosted by other AWS accounts (SaaS providers) and services hosted by other VPCs in your own account
+- exam keywords: private connection, VPC, AWS services, SaaS providers
+
+### Direct Connect
+- [Direct Connect](https://aws.amazon.com/directconnect/) - Establish a dedicated network connection from your premises to AWS
+- exam keywords: dedicated, network connection, on-premises
+
+### Site-to-Site VPN
+- [Site-to-Site VPN](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html) - Connect your on-premises network to your VPC over an IPsec VPN tunnel
+- on premise you need a Custumer Gateway (CGW) and on AWS a Virtual Private Gateway (VGW) to establish the VPN connection
+- exam keywords: on-premises, network, IPsec, VPN, fast implementation, public internet
+
+### Direct Connect(DAX) vs. Site-to-Site VPN
+- Direct Connect:
+  - dedicated network connection from your premises to AWS
+  - private connection
+  - higher bandwidth
+  - more expensive
+  - time-consuming to set up
+- Site-to-Site VPN:
+  - connect your on-premises network to your VPC over an IPsec VPN tunnel
+  - uses the public internet
+  - lower bandwidth
+  - less expensive
+  - faster to set up
+
+### Client VPN
+- [Client VPN](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/what-is.html) - Managed client-based VPN service that enables you to securely access your AWS resources and resources in your on-premises network
+- Connect to your VPC from your computer using OpenVPN
+- exam keywords: client-based, VPN, secure
+
+### Transit Gateway
+- [Transit Gateway](https://aws.amazon.com/transit-gateway/) - Connect thousands of VPCs and on-premises networks using a single gateway
+- hub-and-spoke model (star): connect multiple VPCs and on-premises networks to a central hub (Transit Gateway)
+- exam keywords: thousands of VPCs, on-premises networks, single gateway
+
+### VPC Summary
+- VPC: Virtual network in an AWS region
+- Subnets: Range of IP addresses in your VPC
+- NACLs: Firewall for subnets, stateless
+- Security Groups: Firewall for EC2 instances, stateful
+- VPC Flow Logs: Capture IP traffic going to and from network interfaces
+- VPC Peering: Connect two VPCs to route traffic between them
+- VPC Endpoints: Privately connect your VPC to supported AWS services
+- PrivateLink: Privately connect your VPC to services hosted by other AWS accounts
+- Direct Connect: Dedicated network connection from your premises to AWS
+- Site-to-Site VPN: Connect your on-premises network to your VPC over an IPsec VPN tunnel
+- Client VPN: Managed client-based VPN service
+- Transit Gateway: Connect thousands of VPCs and on-premises networks using a single gateway
