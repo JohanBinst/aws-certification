@@ -716,3 +716,81 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 - Define Zone of Trust = AWS account or AWS Organization
 - Access outiside zone of trust is flagged as a finding
 - exam keywords: IAM Access Analyzer, shared resources, Zone of Trust, analyze access
+
+## 17 Machine Learning
+### Rekognition
+- [Rekognition](https://aws.amazon.com/rekognition/) - Deep learning-based image and video analysis service
+- Image recognition, face detection, face analysis, face comparison, text in image, unsafe content detection
+- exam keywords: image recognition, face detection, text in image
+
+### Amazon Transcribe
+- [Transcribe](https://aws.amazon.com/transcribe/) - Automatic speech recognition service
+- Convert speech to text (multiple languages)
+- Remove PII (Personal Identifiable Information) from the transcript automatically
+- exam keywords: speech to text
+
+### Amazon Polly
+- [Polly](https://aws.amazon.com/polly/) - Text-to-speech service
+- Convert text into lifelike speech
+- exam keywords: text to speech
+
+### Amazon Translate
+- [Translate](https://aws.amazon.com/translate/) - Neural machine translation service
+- Translate text between languages
+- exam keywords: machine translation
+
+### Amazon Lex
+- [Lex](https://aws.amazon.com/lex/) - Conversational interfaces for your applications (same tech as Alexa)
+- Automatic Speech Recognition to convert speech to text
+- Natural Language Understanding to recognize the intent of the text
+
+### Connect
+- [Connect](https://aws.amazon.com/connect/) - Cloud-based contact center service
+- Receive calls, create contact flows, cloud-based virtual contact center
+- can integrate with other CRM (Customer Relationship Systems) systems or AWS services
+- exam keywords: contact center
+- No upfront payments, no long-term contracts, 80% less than traditional contact centers
+
+### Amazon Comprehend
+- [Comprehend](https://aws.amazon.com/comprehend/) - Natural Language Processing (NLP) service
+- Sentiment analysis, key phrase extraction, language detection, entity recognition
+- fully managed and serverless
+- exam keywords: NLP, sentiment analysis, key phrase extraction
+
+### Amazon SageMaker
+- [SageMaker](https://aws.amazon.com/sagemaker/) - Fully managed service that enables developers and data scientists to quickly and easily build, train, and deploy machine learning models at any scale
+- Typically diffucult to do all the processes in one place + provision servers
+
+### Forecast
+- [Forecast](https://aws.amazon.com/forecast/) - Fully managed service for time-series forecasting
+- exam keywords: time-series forecasting
+
+### Kendra
+- [Kendra](https://aws.amazon.com/kendra/) - Intelligent search service powered by machine learning
+- Fully managed document search service powered by machine learning
+- extract answers from within a document
+- exam keywords: intelligent search, document search service
+
+### Amazon Personalize
+- [Personalize](https://aws.amazon.com/personalize/) - Real-time personalization and recommendation service
+- exam keywords: real-time personalization, recommendation
+
+### Textract
+- [Textract](https://aws.amazon.com/textract/) - Extract text and data from documents
+- exam keywords: extract text, data, documents
+
+### Summary
+- Rekognition: image and video analysis
+- Transcribe: speech to text
+- Polly: text to speech
+- Translate: machine translation
+- Lex: conversational bots - chatbots
+- Connect: cloud-based contact center
+- Comprehend: natural language processing
+- SageMaker: machine learning for every developer and data scientist
+- Forecast: time-series forecasting
+- Kendra: ML powered search engine
+- Personalize: real-time personalization and recommendation
+- Textract: extract text and data from documents
+
+## 18 Account Management & Billing
