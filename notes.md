@@ -794,3 +794,272 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 - Textract: extract text and data from documents
 
 ## 18 Account Management & Billing
+
+### Billing & Costing tools
+#### Pricing Calculator
+- [Pricing Calculator](https://calculator.aws.amazon.com/) - Estimate your monthly bill using AWS products
+- exam keywords: estimate, monthly bill
+
+#### AWS Billing Dashboards
+- [Billing Dashboards](https://aws.amazon.com/aws-cost-management/aws-billing-and-cost-management/) - Monitor your AWS billing and usage
+- High level overview of your AWS billing and usage
+- Gives estimates of your monthly bill
+
+#### Free Tier Dashboard
+- [Free Tier Dashboard](https://aws.amazon.com/free/) - Monitor your free tier usage
+
+#### Cost Allocation tags
+- [Cost Allocation tags](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html) - Tags that you can assign to your AWS resources
+- Use cost allocation tags to track your AWS cost on a detailed level
+- Use AWS or User-Defined tags
+
+#### Tagging and Resource Groups
+- [Tagging and Resource Groups](https://aws.amazon.com/resource-groups/) - Create and manage groups of resources
+- Use tags to group resources together
+- exam keywords: tags, resource groups
+- Resources created by CloudFormation are all tagged the same way
+
+#### Cost and Usage Reports
+- [Cost and Usage Reports](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-reports-costusage.html) - Access detailed billing reports
+- The AWS Cost and Usage Report contains the most comprehensive set of AWS cost and usage data available
+- The lists AWS usage for each service category used by an account and its IAM users in hourly or daily line items, as well as any tags that you have activated for cost allocation purposes
+- Can be integrated with Athena, Redshift or QuickSight
+- Export to S3 bucket in CSV or Parquet format
+
+#### Cost Explorer
+- [Cost Explorer](https://aws.amazon.com/aws-cost-management/aws-cost-explorer/) - Visualize, understand, and manage your AWS costs and usage over time
+- Create custom reports that analyze cost and usage data
+- High level overview of your AWS costs and usage
+- Forecast usage up to 12 months (exam question)
+- Choos an optimal Savings Plan (to lower prices on your bill)
+
+#### Monitoring: Billing Alarms in CloudWatch
+- [Billing Alarms in CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html) - Set up billing alarms to monitor your estimated AWS charges
+- helpful for email notifications when your bill exceeds a certain threshold
+
+#### AWS Budgets
+- [Budgets](https://aws.amazon.com/aws-cost-management/aws-budgets/) - Set custom cost and usage budgets that alert you when you exceed your thresholds
+- Up to 5 SNS notifications per budget
+- First 2 budgets are free
+- exam keywords: budgets, cost and usage budgets
+
+#### AWS Cost Anomaly Detection
+- [Cost Anomaly Detection](https://aws.amazon.com/aws-cost-management/aws-cost-anomaly-detection/) - Detects unusual spending patterns
+- Continuously monitors your AWS usage and cost patterns and uses machine learning to identify your normal and anomalous spend patterns
+- You don't need to define any rules or set up any thresholds
+- Sends you the anomaly detection findings via email with root cause analysis
+- exam keywords: anomaly detection, unusual spending patterns
+
+#### AWS Service Quotas
+- [Service Quotas](https://aws.amazon.com/servicequotas/) - View and manage your quotas for AWS services
+- Notify you when you're approaching your quota (eg. number of EC2 instances, Lambda executions, etc.)
+- Request a quota increase if needed
+- exam keywords: quotas, request increase
+
+#### AWS Trusted Advisor
+- [Trusted Advisor](https://aws.amazon.com/premiumsupport/trustedadvisor/) - Provides real-time guidance to help you provision your resources following AWS best practices
+- No need to install anything - high level AWS account check
+- For full set of checks, you need Business or Enterprise support
+
+
+#### AWS Support Plans Pricing
+- [Support Plans Pricing](https://aws.amazon.com/premiumsupport/plans/) - AWS Support Plans Pricing
+- Basics: free - good for exploring AWS
+  - Customer Service 24/7, documentation, whitepapers, best practices
+  - AWS Trusted Advisor: core checks
+  - AWS Personal Health Dashboard: alerts and remediation guidance
+- Developer: Good for development and test
+  - All Basic features
+  - Business hours email support
+  - Unlimited cases and contacts
+  - General guidance: <24h business hours response time
+  - System impaired: <12h business hours response time
+- Business: Good for production workloads
+  - All Developer features
+  - 24/7 phone, email, chat support
+  - Full set of Trusted Advisor checks + API access
+  - Infrastructure event management for additional fee
+  - General guidance: <24h business hours response time
+  - System impaired: <12h business hours response time
+  - Production system impaired: <4h business hours response time
+  - Production system down: <1h business hours response time
+- Enterprise On-Ramp Support Plan: production or business critical workloads
+  - All Business features
+  - Access to a pool of Technical Account Managers (TAMs)
+  - Concierge support team (for billing and account best practices)
+  - Infrastructure event management included, Well-Architected & Operations Reviews
+  - General guidance: <24h business hours response time
+  - System impaired: <12h business hours response time
+  - Production system impaired: <4h business hours response time
+  - Production system down: <1h business hours response time
+  - Business critical system down: <30min business hours response time
+- Enterprise Support plan: mission critical workloads
+  - All Enterprise On-Ramp features
+  - Access to a designated Technical Account Manager (TAM)
+  - General guidance: <24h business hours response time
+  - System impaired: <12h business hours response time
+  - Production system impaired: <4h business hours response time
+  - Production system down: <1h business hours response time
+  - Business critical system down: <15min business hours response time
+
+#### Account Best practices Summary
+- Use Organizations to manage multiple accounts
+- Use SCP (Service Control Policies) to restrict account power
+- Easily setup multiple accounts with best practices using AWS Control Tower
+- Use Tags & Cost Allocation Tags for easy management and billing
+- IAM guidelines: MFA, least privilege, password policies, password rotation
+- Config to
+- CloudFormation to deploy stacks across multiple accounts and regions
+- Trusted Advisor to get insights, Support Plan adapted to your needs
+- Sends Service Logs and Access Logs to S3 or CloudWatch Logs
+- CloudTrail to record API calls made within your account
+- If your Account is compromised: change the root password, delete and rotate all passwords/keys, contact AWS Support
+- Use AWS Service catalog to create pre-defined stacks defined by your organization
+
+## 19 Advanced Identity
+### Security Token Service (STS)
+- [STS](https://aws.amazon.com/iam/features/managing-aws-access/) - Create temporary, limited-privileges security credentials to access AWS services
+- Short-term credentials: you configure the expiration time
+- Use cases:
+  - Identity federation: manage user identities in external systems and proved them with STS tokens to access AWS resources
+  - Cross-account access
+  - IAM Roles for EC2 instances: provide temporary credentials for EC2 instances to access other AWS services
+  - exam keywords: temporary credentials, limited-privileges
+
+### Cognito
+- [Cognito](https://aws.amazon.com/cognito/) - Identity management for Web and Mobile applications users (potentially millions)
+- Sign-up, sign-in, and access control for web and mobile apps quickly and easily
+- login with social identity providers (Google, Facebook, Amazon, Apple, etc.)
+- exam keywords: identity management, sign-up, sign-in
+
+### Directory Service
+- [Directory Service](https://aws.amazon.com/directoryservice/) - Managed Microsoft Active Directory in the AWS Cloud
+- 3 types of directory services: (not required for exam)
+  - AD Connector: proxy to connect to on-premises AD
+  - Simple AD: AD-compatible managed directory
+  - Managed AD: fully managed Microsoft AD
+- exam keywords: managed Microsoft Active Directory
+
+### AWS IAM Identity Center (successor of )
+- [IAM Identity Center](https://aws.amazon.com/iam/features/managing-aws-access/) - Centralized place to manage all your AWS identities
+- One login (single sign-on) to access all your accounts from the IAM Identity Center portal, type of accounts:
+  - AWS accounts in AWS Organizations (exam question)
+  - Business cloud applications (Salesforce, Office 365, etc.)
+  - SAML 2.0 compliant applications
+  - EC2 Windows Instances
+- Identity providers:
+  - Build-in identity store in IAM Identity Center
+  - 3rd party: Active Directory, OneLogin, Okta, Ping Identity
+- exam keywords: one login, centralized, AWS Organizations
+
+## 20 Other Services
+### Workspaces
+- [Workspaces](https://aws.amazon.com/workspaces/) - Desktop-as-a-Service (DaaS) solution
+- Secure, managed, cloud-based virtual desktops
+- exam keywords: Desktop-as-a-Service, virtual desktops
+
+### AppStream
+- [AppStream](https://aws.amazon.com/appstream/) - Fully managed application streaming service
+- Stream desktop applications to users and they can access it from a web browser (ex. stream Photoshop)
+
+### IoT Core
+- [IoT Core](https://aws.amazon.com/iot-core/) - Connect IoT devices to the AWS Cloud
+- serverless, scalable, and secure
+- integrates with other AWS services (eg. Lambda, S3, SageMaker, etc.)
+- exam keywords: IoT, devices, AWS Cloud
+
+### Amazon Elastic Transcoder
+- [Elastic Transcoder](https://aws.amazon.com/elastictranscoder/) - Convert media files stored in S3 into media files in the formats required by consumer playback devices
+
+### AppSync
+- [AppSync](https://aws.amazon.com/appsync/) - Fully managed GraphQL service
+- store and sync data across devices in real-time --> build backend for web and mobile applications
+- uses GraphQL to make it easy for applications to get exactly the data they need
+- exam keywords: GraphQL, real-time, web, mobile
+
+### Amplify
+- [Amplify](https://aws.amazon.com/amplify/) - Full-stack framework for developing web and mobile applications
+- Amplify provides a library, CLI toolchain, and UI components
+- exam keywords: full-stack, web, mobile
+
+### AWS Application Composer
+- [Application Composer](https://aws.amazon.com/application-composer/) - Build applications without writing any code
+- Generates Infrastructure as Code (IaC) for you using CloudFormation
+- Ability to import existing CloudFormation templates to build applications
+- exam keywords: no code, build applications
+
+### AWS Device Farm
+- [Device Farm](https://aws.amazon.com/device-farm/) - Test your web and mobile applications on real devices in the AWS Cloud
+- exam keywords: test, web, mobile, real devices
+
+### AWS Backup
+- [Backup](https://aws.amazon.com/backup/) - Centralized backup service for backing up data across AWS services
+- on-demand and scheduled backups
+- exam keywords: backup, centralized
+
+### Disaster Recovery Strategies
+- Backup and Restore: backup data to S3, EBS snapshots, RDS snapshots, etc. -> cheapest solution
+- Pilot Light: small version of your application is always running in another region -> more expensive
+- Warm Standby: full version of your application is always running in another region but at minimum size -> more expensive
+- Multi-Site: active-active setup in multiple regions -> most expensive
+
+### Disaster Recovery for Cloud Deployments
+- failover to another region (us-east-1 -> us-west-2) using route 53
+
+### AWS Elastic Disaster Recovery (DRS) (before CloudEndure)
+- [Elastic Disaster Recovery](https://aws.amazon.com/disaster-recovery/) - Disaster recovery service that helps you recover quickly your phisical, virtual, and cloud-based servers into AWS
+- protect against ransomware, data corruption, and natural disasters
+- exam keywords: disaster recovery, recover quickly
+
+### AWS DataSync
+- [DataSync](https://aws.amazon.com/datasync/) - Automate data transfer between on-premises storage and Amazon S3 or Amazon EFS
+- move large amount of data from on-premises to AWS
+- the replication tasks are incremental after the first full load
+- exam keywords: data transfer, on-premises, S3, EFS, incremental
+
+### Cloud Migration Strategies: 7Rs
+- Retire: turn of things you don't need (eg. old servers) or as result of Re-architecting
+- Retain: keep as is: do nothing for now
+- Relocate: move apps from on-premises to the cloud version
+- Rehost (lift and shift): move apps from on-premises to the cloud without changes, databases and data. Use AWS Application Migration Service for example.
+- Replatform (lift and reshape): dont change core architecture, but optimize for cloud (eg. use managed services)
+- Repurchase (drop and shop): moving to a diffrent product (eg. SaaS) while moving to the cloud. Expensive in the short term but quick to deploy.
+- Refactor (re-architect): re-architect the application to be cloud-native. Use AWS services to optimize the application. Most expensive but most benefits.
+
+### AWS Application Discovery Service
+- [Application Discovery Service](https://aws.amazon.com/application-discovery/) - plan migration projects by gathering information about on-premises data centers
+- exam keywords: migration projects, on-premises data centers
+
+### AWS Application Migration Service (MGN)
+- [Application Migration Service](https://aws.amazon.com/application-migration-service/) - Migrate applications from on-premises to AWS
+- lift and shift (rehost) or replatform (rehost and optimize)
+- exam keywords: migrate applications, on-premises, AWS
+
+### AWS Migration Evaluator
+- [Migration Evaluator](https://aws.amazon.com/migration-evaluator/) - Analyze on-premises workloads to estimate costs and identify potential savings
+- exam keywords: analyze, on-premises workloads, estimate costs
+
+### AWS Migration Hub
+- [Migration Hub](https://aws.amazon.com/application-migration-service/) - Track the progress of application migrations to the cloud
+- Central location to collect servers and applications inventory data for the assessment planning and tracking of migrations to AWS
+- integrated with AWS Application Migration Service (MGN) and Database Migration Service (DMS)
+- exam keywords: centralized, track progress, application migrations
+
+### AWS Fault Injection Simulator
+- [Fault Injection Simulator](https://aws.amazon.com/fault-injection-simulator/) - Test the resilience of your applications by injecting faults
+- chaos engineering: test how your system behaves under stress (eg high CPU load, network failure)
+- exam keywords: test resilience, inject faults
+
+### AWS Step functions
+- [Step functions](https://aws.amazon.com/step-functions/) - Serverless orchestration service that lets you coordinate multiple AWS services into serverless workflows
+- exam keywords: serverless, orchestration, workflows
+
+### AWS Ground Station
+- [Ground Station](https://aws.amazon.com/ground-station/) - Fully managed service that lets you control satellite communications, process data, and scale your operations without having to worry about building or managing your own ground station infrastructure
+- Allows you to download data from satellites into AWS (S3, EC2, etc.)
+- exam keywords: satellite communications, download satelite data
+
+### Amazon Pinpoint
+- [Pinpoint](https://aws.amazon.com/pinpoint/) - Targeted push notifications, emails, SMS, and voice messages
+- scalable 2 way (outbound and inbound) communication
+- exam keywords: push notifications, emails, SMS, voice messages
