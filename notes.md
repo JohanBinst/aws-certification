@@ -1063,3 +1063,68 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 - [Pinpoint](https://aws.amazon.com/pinpoint/) - Targeted push notifications, emails, SMS, and voice messages
 - scalable 2 way (outbound and inbound) communication
 - exam keywords: push notifications, emails, SMS, voice messages
+
+## 21 AWS Well-Architected Framework
+### AWS Well-Architected Framework
+- [Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/) - Best practices for designing and operating reliable, secure, efficient, and cost-effective systems in the cloud
+- 6 pillars:
+  - Operational Excellence
+  - Security
+  - Reliability
+  - Performance Efficiency
+  - Cost Optimization
+  - Sustainability
+- exam keywords: best practices, reliable, secure, efficient, cost-effective
+
+### AWS Cloud Adoption Framework (CAF)
+- [Cloud Adoption Framework](https://aws.amazon.com/professional-services/CAF/) - Guidance to help organizations develop an efficient and effective plan for their cloud adoption journey
+- exam keywords: guidance, cloud adoption journey
+
+#### CAF Perspectives
+- (will probably have exam question: identify the perspective)
+- CAF groups capabilities into 6 perspectives:
+  - `Business`: helps ensure that cloud investments accelerate digital transformation ambitions and business outcomes
+  - `People`: serves as a bridge between technology and business, helps organizations to evolve to a culture of continous growth, learning and where change becomes business as usual with focus on culture, organizational structure, leadership and workfore
+  - `Governance`: helps orchestrate cloud initiatives
+  - `Platform`: helps you build an enterprise-grade, scalable, hybrid cloud platform
+  - `Security`: helps achieve confidentiality, integrity, and availability of data and systems in the cloud
+  - `Operations`: helps ensure that cloud services are delivered at a level that meets the need of your business
+- Business: Business, People, Governance
+- Technical: Platform, Security, Operations
+
+ #### CAF Tranformation Domains
+ - `Technology`: using the cloud to migrate and modernize legacy infrastructure, applications, data and analytics platforms
+ - `Process`: digigitizing and automating business processes:
+  - leverage new data and analytics platforms
+  - use machine learning and AI to drive innovation
+- `Organization`: reimagining your operation model
+  - organizing your team around products and value streams
+  - leveraging agile methods to rapidly iterate and evolve
+- `Product`: reimagining your business model by creating new value propositions (products and services) and revenue models
+
+#### CAF Transformation Phases
+- `Envision`: demonstrate how the cloud will accelerate your business strategy
+- `Align`: identify cabality gaps acrosse the 6 AWS CAF perspectives which result in an action plan
+- `Launch`: build and deliver pilot initiatives in production and demonstrate incremental business value
+- `Scale`: expand pilot initiatives to the desired scale while realizing the desired business benefits
+
+### AWS Right sizing
+- [Right sizing](https://aws.amazon.com/architecture/well-architected/) - important to choose the right instance type for your workload. The most powerfull instance is not always the best choice, because the cloud is elastic and you can scale up and down as needed
+- scaling up is easy so start small and scale up as needed
+- Imporant to right size in 2 moments:
+  - before cloud migration
+  - continously after the cloud onboarding process because requirements change over time
+
+### AWS re:Post
+- [re:Post](https://aws.amazon.com/architecture/well-architected/) - AWS re:Post is a community-driven collection of best practices, articles, and tools that have been shared by AWS Solutions Architects
+- exam keywords: community-driven, best practices
+
+#### AWS Knowledge Center
+- [Knowledge Center](https://aws.amazon.com/premiumsupport/knowledge-center/) - AWS Knowledge Center provides answers to frequently asked questions, best practices, and troubleshooting tips from AWS Support
+- part of re:Post because it is a community-driven collection of best practices
+- exam keywords: frequently asked questions, best practices
+
+### AWS Managed Services (AMS)
+- [Managed Services](https://aws.amazon.com/managed-services/) - Managed Services for AWS
+- AMS Team operates AWS on your behalf, providing a secure and compliant AWS Landing Zone, a proven enterprise operating model, on-going cost optimization, and day-to-day infrastructure management
+- exam keywords: managed services, secure, compliant
