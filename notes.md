@@ -4,33 +4,173 @@
 
 Different types of cloud computing
 
-## IAM - Identity and Access Management
+## 2. IAM - Identity and Access Management
 
-### Definitions
-root user
-IAM Users:
-IAM User Groups:
-IAM Policies
-IAM Roles
+Users: mapped to a physical person, has a username and password for the AWS console
+Groups: collection of users under one set of permissions
+Policies: JSON documents that define permissions
+Roles: create roles and assign them to AWS resources
+Security: MFA + password policy
+AWS CLI: manage your AWS services using the command line
+AWS SDK: manage your AWS services using a programming language
+Access keys: access your AWS account using the CLI or SDK
+Audit: IAM Credential Report & IAM Access Advisor
 
-### IAM Best practices
+## 3. EC2 - Elastic Compute Cloud
 
-### Shared responsibilty model
+### EC2 Instances
+- [EC2](https://aws.amazon.com/ec2/) - Virtual servers in the cloud
+- EC2 instances are virtual servers that can be resized and scaled up or down
+- EC2 composed of AMI (OS), Instance size (CPU + RAM), Storage (EBS or Instance Store), Security Groups, EC2 User Data (bootstrap scripts that is started when the instance is launched)
+- Security Groups: act as a virtual firewall for your instance to control inbound and outbound traffic
+- EC2 User Data: bootstrap scripts that are run when the instance is launched
+- SSH: start a terminal session on a Linux instance (port 22)
+- EC2 Instance Role: link to IAM roles
+- Purchasing Options:
+  - On-demand: pay as you go
+  - Spot: bid for unused capacity
+  - Reserved Standard: 1-3 years, up to 75% discount
+  - Reserved Convertible: 1-3 years, up to 54% discount, can change the EC2 instance type
+  - Dedicated Host: physical server dedicated to your use
+  - Dedicated Instance: instance running on a physical server dedicated to your use
 
-## 2. EC2 - Elastic Compute Cloud
-
-## 3. Storage for EC2 Instance
+## 4. Storage for EC2 Instance
 
 ### EBS
+- [EBS](https://aws.amazon.com/ebs/) - Elastic Block Store, block storage volumes that you can attach to your EC2 instances
+- It allows your instance to persist data even after the instance is terminated
+- They can only be mounted at one instance at a time
+- Bound to a specific Availabilty Zone
+- Types of EBS:
+  - General Purpose SSD (gp2): balances price and performance
+  - Provisioned IOPS SSD (io1): high-performance SSD volume for mission-critical low-latency or high-throughput workloads
+  - Throughput Optimized HDD (st1): low-cost HDD volume designed for frequently accessed, throughput-intensive workloads
+  - Cold HDD (sc1): low-cost HDD volume designed for less frequently accessed workloads
+  - Magnetic (standard): previous generation HDD volume, low cost, low performance
+- Analogy: think of them as a network USB stick
+- exam keywords: block storage, persistent, EBS volumes
 
 ### EFS
+- [EFS](https://aws.amazon.com/efs/) - Elastic File System, scalable file storage for use with Amazon EC2
+- It's a network drive (i.e. not a physical drive):
+  - it uses the network to communicate with the instance -> latency
+  - it can be detached from an instance and attached to another one quickly
+- It's locked to an AZ, but can be mounted on multiple instances in the same AZ
+- To move to another AZ, you need to create a snapshot of the EFS and copy it to another AZ
+- EFS have a provisioned capacity (size in GBs and IOPS)
+- You get billed for the provisioned capacity
+- Delete on termination: you can choose to keep the EBS volume or delete it when the EC2 instance is terminated (by default: the root EBS volume is deleted, but additional volumes are kept)
+- exam keywords: network drive, scalable, multiple instances
 
-## 4. ELB & ASG - Elastic Load Balancing & Auto Scaling Groups
+### Amazon FSx for Windows File Server
+- [Amazon FSx for Windows File Server](https://aws.amazon.com/fsx/windows/) - Fully managed Windows file system
+- Windows File Server fully managed by AWS
+- Supports the SMB protocol & Windows NTFS
+- Integrates with Microsoft Active Directory
+- can be accessed from AWS or on-premises
 
-## 5. Amazon S3
+### Amazon FSx for Lustre
+- [Amazon FSx for Lustre](https://aws.amazon.com/fsx/lustre/) - Fully managed file system optimized for compute-intensive workloads
+- Used for ML, video processing, financial modeling, etc.
+- High-performance file system: 100GBs/s of throughput, sub-millisecond latencies
+- exam keywords: compute-intensive workloads, high-performance file system
 
-## 6. Databases & Analytics
+### EC2 Instance Store
+- [EC2 Instance Store](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html) - Temporary block storage for your EC2 instance
+- Instance store volumes are temporary and will be deleted if the instance is stopped or terminated
+- Better I/O performance than EBS volumes
+- Use cases: buffer, cache, scratch data, temporary content
+- exam keywords: temporary, high I/O performance
 
+### EC2 Image Builder
+- [EC2 Image Builder](https://aws.amazon.com/image-builder/) - Fully managed service that makes it easier to automate the creation, management, and deployment of customized, secure, and up-to-date server images that are pre-installed and pre-configured with software and settings
+- exam keywords: automate, creation, management, deployment, server images
+
+## 5. ELB & ASG - Elastic Load Balancing & Auto Scaling Groups
+### High Availability, Scalability, elasticity, and agility in the cloud
+- High Availability: ensure your application remains operational during component failure
+- Scalability: ability to handle increased load by adding resources
+- Elasticity: automatically add or remove resources based on load
+- Agility in the cloud: quickly provision resources as needed
+
+### Elastic Load Balancer
+- [ELB](https://aws.amazon.com/elasticloadbalancing/) - Distribute incoming application or network traffic across multiple targets, such as EC2 instances, containers, and IP addresses
+- supports health checks
+- 4 types:
+  - application load balancer: HTTP/HTTPS, Layer 7, static DNS
+  - network load balancer: ultra-high performance TCP, TLS, UDP, Layer 4, static IP
+  - gateway load balancer: route traffic to firewalls that you manage on EC2 instances, Layer 3
+  - classic load balancer: retired in 2023, layer 4 and 7 (replaced by ALB and NLB)
+- exam keywords: distribute, incoming traffic, health checks
+
+### Auto Scaling Groups
+- [ASG](https://aws.amazon.com/autoscaling/) - Scale EC2 instances based on demand
+- can scale out (add instances) or scale in (remove instances) based on the demand on your system or replace unhealthy instances
+- integrated with the ELB
+- scaling strategies:
+  - manual: you manually add or remove instances
+  - dynamic: based on demand:
+      - target tracking scaling: target a specific average utilization: eg. CPU at 70%
+      - simple / step scaling: scale based on CloudWatch alarms
+      - sheduled actions: scale based on a schedule
+      - predictive scaling: use machine learning to predict future usage
+- exam keywords: scale, demand
+
+## 6. Amazon S3
+### S3 - Simple Storage Service
+- [S3](https://aws.amazon.com/s3/) - Object storage service that offers industry-leading scalability, data availability, security, and performance
+- S3 is object-based storage, not block-based storage
+- S3 is a universal namespace, i.e. each bucket name must be unique globally
+- S3 is tied to a region, and the data remains in the region unless you transfer it
+- S3 security:
+  - User-based: IAM policies
+  - Resource-based: bucket policies, ACLs
+  - Encryption: in transit (SSL/TLS), at rest (SSE-S3, SSE-KMS, SSE-C)
+  - S3 websites: host a static website using S3
+  - S3 versioning: multiple versions for files, prevent accidental deletes
+  - S3 Replication: CRR (Cross-Region Replication), SRR (Same-Region Replication), must enable versioning
+  - S3 Lifecycle Rules: automate moving objects between storage classes or deleting them
+  - S3 Storage Classes:
+    - Standard: general-purpose storage of frequently accessed data eg. for content delivery, big data analytics, mobile and gaming applications
+    - IA (Infrequent Access): for data that is accessed less frequently, but requires rapid access when needed. Lower fee than S3, but you are charged a retrieval fee. Suitable for long-term storage, backups, and disaster recovery
+    - IZ-IA (One Zone-Infrequent Access): for data that is accessed less frequently, but requires rapid access when needed. Lower fee than IA, but data is stored in a single AZ
+    - Glacier: low-cost storage class for data archiving. Retrieval times configurable from minutes to hours
+      - Instant retrieval: miliseconds retrieval, minimum storage duration: 90 days
+      - Flexible retrieval:
+        - expedited retrieval: 1-5 minutes
+        - standard retrieval: 3-5 hours
+        - Bulk retrieval: 5-12 hours
+        - minimum storage duration: 90 days
+      - Deep archive:
+        - standard retrieval: 12 hours
+        - bulk retrieval: 48 hours
+        - minimum storage duration: 180 days
+    - Intelligent Tiering: designed to optimize costs by automatically moving data to the most cost-effective access tier, without performance impact and small monthly monitoring and automation fee:
+      - frequent access: default
+      - infrequent access: data not accessed for 30 days
+      - archive instant access: data not accessed for 90 days
+      - archive access: configurable from 90 days to 700+ days
+      - deep archive access: configurable from 180 days to 700+ days
+  ### Snow Family
+  - [Snow Family](https://aws.amazon.com/snow/) - Physical devices to transfer data to and from AWS
+  - Snowcone: small, portable, rugged device for edge computing
+  - Snowball: large, rugged device for large data transfers
+  - Snowmobile: exabyte-scale data transfer service
+  - exam keywords: physical devices, edge computing, large data transfers
+
+  ### Edge computing
+  - [Edge computing](https://aws.amazon.com/edge-computing/) - Process data closer to the source of data generation
+  - reduce latency, save bandwidth, process data closer to the source
+  - Snowball Edge: compute optimized or storage optimized devices with EC2 instances
+  - Snowcone edge: computing optimized device for edge computing
+  - exam keywords: reduce latency, save bandwidth, process data closer to the source
+
+
+  ### Storage Gateway
+  - [Storage Gateway](https://aws.amazon.com/storagegateway/) - Hybrid cloud storage service that gives you on-premises access to virtually unlimited cloud storage
+
+
+## 7. Databases & Analytics
 ### RDS (Relational Database Service)
 - [RDS](https://aws.amazon.com/rds/) - Managed relational database service that supports multiple database engines: MySQL, PostgreSQL, MariaDB, Oracle, SQL Server, and Aurora
 - suited for OLTP workloads: Online Transaction Processing
@@ -55,7 +195,6 @@ IAM Roles
 
 
 ### Amazon Elasticache
-
 ElastiCache is to get managed Redis or Memcached in-memory databases with high performance and low latency.
 --> Helps to reduce the load of databases (RDS DB: Postgres, or other) for read intensive workloads by storing cache in in-memory database
 
@@ -104,7 +243,6 @@ insert schema architecture
 - exam keywords: Hadoop clusters, Big Data, data processing
 
 ### Amazon Athena
-
 - [Amazon Athena](https://aws.amazon.com/athena/) - serverless query service that makes it easy to analyze data in Amazon S3 using standard SQL
 - S3 objects supported are CSV, JSON, ORC, Avro, and Parquet (built on Presto)
 - no need to set up or manage any infrastructure
@@ -188,7 +326,7 @@ exam keywords: analyze data in S3, serverless, SQL
 - Neptune: Graph database
 - TimeStream: Time-series database
 
-## Other compute services: ECS, lambda, Batch and Lightsail
+## 8. Other compute services: ECS, lambda, Batch and Lightsail
 
 ### ECS (Elastic Container Service)
 - [ECS](https://aws.amazon.com/ecs/) - Highly scalable, high-performance container orchestration service that supports Docker containers
@@ -255,7 +393,7 @@ exam keywords: analyze data in S3, serverless, SQL
 - Batch: Run batch jobs on AWS using EC2 instances (not serverless)
 - Lightsail: Virtual private server (VPS) service
 
-## Deployments
+## 9. Deployments
 
 ### CloudFormation
 - [CloudFormation](https://aws.amazon.com/cloudformation/) - Infrastructure as Code (IaC) service that helps you model and set up your AWS resources so you can spend less time managing those resources and more time focusing on your applications
@@ -263,7 +401,7 @@ exam keywords: analyze data in S3, serverless, SQL
 - repeat architecture in different environments, regions or AWS accounts
 - exam keywords: Infrastructure as Code, templates, YAML, JSON,
 
-## CDK (Cloud Development Kit)
+### CDK (Cloud Development Kit)
 - [CDK](https://aws.amazon.com/cdk/) - Software development framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation
 - Define cloud infrastructre through code (Python, TypeScript, Java, C#)
 - Code is then synthesized into CloudFormation templates
@@ -316,7 +454,7 @@ exam keywords: analyze data in S3, serverless, SQL
 - from code commit to build to deployment
 - exam keywords: CI/CD, continuous integration, continuous delivery
 
-## 12 Global appplications
+## 10 Global appplications
 
 ### Route 53
 - [Route 53](https://aws.amazon.com/route53/) - Scalable Domain Name System (DNS) web service
@@ -397,7 +535,7 @@ Both use edge locations to decrease latency and protection against DDoS attacks
   - low latency
   - highest difficulty
 
-## 13 Cloud Integrations
+## 11 Cloud Integrations
 
 ### SQS (Simple Queue Service)
 - [SQS](https://aws.amazon.com/sqs/) - Fully managed message queuing service that enables you to decouple and scale microservices, distributed systems, and serverless applications
@@ -415,7 +553,7 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 - [Amazon MQ](https://aws.amazon.com/amazon-mq/) - Managed message broker service for Apache ActiveMQ and RabbitMQ that makes it easy to set up and operate message brokers in the cloud
 - exam keywords: message broker, Apache ActiveMQ, RabbitMQ
 
-## 14 Cloud Monitoring
+## 12 Cloud Monitoring
 
 ### CloudWatch Metrics & Alarms
 - [CloudWatch](https://aws.amazon.com/cloudwatch/) - Monitor AWS resources and applications in real-time
@@ -461,7 +599,7 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 - provides alerts and remediation guidance when AWS is experiencing events that may impact you
 - exam keywords: alerts, remediation guidance
 
-## 15 VPC - Virtual Private Cloud
+## 13 VPC - Virtual Private Cloud
 
 ### VPC
 - [VPC](https://aws.amazon.com/vpc/) - Virtual network that you create in an AWS region
@@ -559,7 +697,7 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 - Client VPN: Managed client-based VPN service
 - Transit Gateway: Connect thousands of VPCs and on-premises networks using a single gateway
 
-## 16 Security & Compliance
+## 14 Security & Compliance
 
 ### Shared responsibility model
 - AWS is responsible for security of the cloud -> hardware, software, networking, and facilities that run AWS services
@@ -717,7 +855,7 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 - Access outiside zone of trust is flagged as a finding
 - exam keywords: IAM Access Analyzer, shared resources, Zone of Trust, analyze access
 
-## 17 Machine Learning
+## 15 Machine Learning
 ### Rekognition
 - [Rekognition](https://aws.amazon.com/rekognition/) - Deep learning-based image and video analysis service
 - Image recognition, face detection, face analysis, face comparison, text in image, unsafe content detection
@@ -793,17 +931,17 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 - Personalize: real-time personalization and recommendation
 - Textract: extract text and data from documents
 
-## 18 Account Management & Billing
+## 16 Account Management & Billing
 ### 1 AWS Organizations
 - AWS Organizations helps you centrally manage and govern your environment as you grow and scale your AWS resources
-- Organize accounts into Organizational Units (OUs): 
+- Organize accounts into Organizational Units (OUs):
     - OUs can contain other OUs
     - OUs can contain accounts
     - eg. dev, test, prod, finance,
-- Main account is the master account 
+- Main account is the master account
 - Apply service control policies (SCPs) to OUs
 - Consolidated billing across all accounts
-- Benefits: 
+- Benefits:
     - Centralized management of multiple AWS accounts
     - Cost savings through consolidated billing
     - Fine-grained control over access, security, and compliance: SCPs
@@ -812,7 +950,7 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 - exam keywords: Organizations, OUs, SCPs, consolidated billing
 
 #### A. Multi account strategies
-- Single Account: 
+- Single Account:
     - simple, easy to manage
     - no isolation between environments
     - no cost separation
@@ -832,7 +970,7 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 
 #### C. Consolidated billing
 - Consolidated billing is a feature that enables you to consolidate payment for multiple AWS accounts within your organization by designating one of the accounts as the payer account
-- Benefits: 
+- Benefits:
     - volume pricing: combined usage for all accounts
     - easy tracking of charges: one bill
     - easy to allocate costs: cost allocation tags
@@ -840,7 +978,7 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 
 ### AWS Control Tower
 - Easy way to se up and govern a secure and compliant multi-account AWS environment based on best practices
-- Benefits: 
+- Benefits:
     - set up a secure multi-account environment
     - automate the setup of accounts
     - centrally manage security and compliance
@@ -864,7 +1002,7 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 - exam keywords: Service Catalog, IT services, approved products
 
 ### Pricing models in AWS
-- Pay as you go: 
+- Pay as you go:
     - pay for what you use
     - no upfront cost
     - no long-term commitment
@@ -888,7 +1026,7 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 - CloudFormation (*)
 - Auto Scaling Groups (*)
 (*) you pay for the resources that are created by these services
-- Free tier: 
+- Free tier:
     - 12 months free: 750 hours of EC2, 5GB of S3, 25GB of DynamoDB
     - Always free: 1M Lambda requests, 1M free requests on API Gateway, 25GB of EBS
 
@@ -915,7 +1053,7 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 - Savings plans: future lecture
 
 #### Lambda and ECS
-- Lambda: 
+- Lambda:
     - pay per call
     - pay per duration
     - free tier: 1M free requests per month, 400,000 GB-seconds of compute time per month
@@ -926,7 +1064,7 @@ Both use edge locations to decrease latency and protection against DDoS attacks
 
 #### Storage pricing - S3
 Pricing depends on:
-- Storage class: 
+- Storage class:
     - S3 Standard: general purpose storage of frequently accessed data
     - S3 Infrequent Access (IA): long-lived, but less frequently accessed data
     - S3 One Zone-IA: long-lived, infrequently accessed, non-critical data
@@ -943,7 +1081,7 @@ Similar pricing model for EFS pay per use, has infrequent access & lifecycle rul
 
 #### Storage pricing - EBS
 Pricing depends on:
-- Type of volume: 
+- Type of volume:
     - General Purpose SSD (gp2)
     - Provisioned IOPS SSD (io1)
     - Throughput Optimized HDD (st1)
@@ -984,7 +1122,7 @@ Pricing depends on:
 #### Networking costs in AWS per GB - Simplified
 - Free for traffic into Availability Zones
 - Free for traffic between EC2 instances in the same Availability Zone
-- Traffic between 2 EC2 instances in different Availability Zones: 
+- Traffic between 2 EC2 instances in different Availability Zones:
     - $0.01 per GB using private IP
     - $0.02 per GB using public IP / Elastic IP
 - Traffic between 2 EC2 instances in different regions: $0.02 per GB inter region data transfer
@@ -993,11 +1131,11 @@ Pricing depends on:
 - AWS Savings Plans is a flexible pricing model that offers low prices on EC2 and Fargate usage, in exchange for a commitment to a consistent amount of usage (measured in $/hour) for a 1 or 3 year term
 - Easiest way to setup long-term commitments on AWS
 - 2 types of Savings Plans:
-    - Compute Savings Plans: 
+    - Compute Savings Plans:
         - up to 66% discount compared to on-demand
         - regardless of family, region, size, OS, tenacy or compute options
         - compute options: EC2, Fargate, Lambda
-    - EC2 Instance Savings Plans: 
+    - EC2 Instance Savings Plans:
         - up to 72% discount compared to on-demand
         - commit to usage of individual instance families in a region (eg. C5 or M5 instances in US West)
         - regardless of AZ, size (eg. M5.2xlarge), OS or tenacy
@@ -1144,7 +1282,7 @@ Pricing depends on:
 - If your Account is compromised: change the root password, delete and rotate all passwords/keys, contact AWS Support
 - Use AWS Service catalog to create pre-defined stacks defined by your organization
 
-## 19 Advanced Identity
+## 17 Advanced Identity
 ### Security Token Service (STS)
 - [STS](https://aws.amazon.com/iam/features/managing-aws-access/) - Create temporary, limited-privileges security credentials to access AWS services
 - Short-term credentials: you configure the expiration time
@@ -1180,7 +1318,7 @@ Pricing depends on:
   - 3rd party: Active Directory, OneLogin, Okta, Ping Identity
 - exam keywords: one login, centralized, AWS Organizations
 
-## 20 Other Services
+## 18 Other Services
 ### Workspaces
 - [Workspaces](https://aws.amazon.com/workspaces/) - Desktop-as-a-Service (DaaS) solution
 - Secure, managed, cloud-based virtual desktops
@@ -1292,7 +1430,7 @@ Pricing depends on:
 - scalable 2 way (outbound and inbound) communication
 - exam keywords: push notifications, emails, SMS, voice messages
 
-## 21 AWS Well-Architected Framework
+## 19 AWS Well-Architected Framework
 ### AWS Well-Architected Framework
 - [Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/) - Best practices for designing and operating reliable, secure, efficient, and cost-effective systems in the cloud
 - 6 pillars:
