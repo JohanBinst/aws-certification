@@ -1,0 +1,62 @@
+# Fundamentals and Accounts
+## AWS Accounts - basics
+### AWS Account
+- AWS account is container for identities (users) and ressources (services).
+- It is a global entity, not bound to a region.
+- It is the root of the AWS hierarchy.
+
+### Root user
+- Root user is the first user created with the account, it uses the email that created the account.
+- It has full access to all AWS services and resources and can't be restricted.
+- It is recommended to create an IAM user for daily use and keep the root user for emergencies.
+
+### IAM
+- IAM (Identity and Access Management) is a service that allows to manage users and permissions.
+- IAM identites are created in the account and can be used to access AWS services of the account.
+- IAM identities can be users, groups or roles.
+- IAM identities have no permissions by default, permissions are granted by policies.
+- IAM identities can be shared between accounts if needed but has to be specifically allowed.
+
+## AWS Fundamentals
+
+### Public vs private services
+- **Public services** are in the AWS public zone and are accessible from the internet. To access a public service you still need the authentication and authorization to access the service.
+
+- **Private services** are in the AWS private zone and are not accessible from the internet. VPC's are private unless otherwise specified (like the default VPC). To access a private service you need to be in the same VPC or have a VPC peering connection. In case of a hybrid cloud, you can use a VPN or Direct Connect to access the private services. (services a verifier)
+
+### AWS Global Infrastructure
+- **Region**: A region is a geographical area that consists of two or more availability zones. Each region is a separate geographic area. Each region has multiple, isolated locations known as Availability Zones.
+
+- **Availability Zone**: An Availability Zone is one or more discrete data centers with redundant power, networking, and connectivity in an AWS Region. Availability Zones are physically separated by a meaningful distance, many kilometers, from any other Availability Zone, although all are within 100 km of each other.
+
+- **Edge Location**: Edge Locations are endpoints for AWS which are used for caching content. Typically this consists of CloudFront, Amazon's Content Delivery Network (CDN). Requests for content are automatically routed to the nearest edge location, so content is delivered with the best possible performance.
+
+## AWS Default VPC
+- When you create an AWS account, you get a default VPC in each region. The default VPC is a logically isolated virtual network in the AWS cloud that is automatically created for your AWS account. The default VPC has a default subnet in each Availability Zone. You can create your own VPC and subnets if you want to.
+
+- There can only be one default VPC per region, and they can be deleted and recreated from the console UI .
+
+- The default VPC is a public VPC, meaning that the instances in the default VPC can access the internet. The default VPC has an internet gateway attached to it. The default VPC has a default security group attached to it. (The default security group allows all inbound traffic and all outbound traffic. You can create your own security groups if you want to.(a verifier))
+
+- They always have the same IP range (IPv4 CIDR block: 172.31.0.0/16) and same '1 subnet per AZ' architecture.
+
+### EC2
+- **Elastic Compute Cloud (EC2)** is AWS's implement of IAAS(Infrastructure as a service).
+
+- It allows you to provision virtual machines known as instances with resources you select and an operating system of your choosing.
+
+### AMI
+AMI (Amazon Machine Image) is a template that contains the software configuration (operating system, application server, and applications) required to launch your instance.
+
+An AMI includes the following:
+  - A template for the root volume for the instance (for example, an operating system, an application server, and applications)
+  - Launch permissions that control which AWS accounts can use the AMI to launch instances
+  - A block device mapping that specifies the volumes to attach to the instance when it's launched (boot volume and additional volumes if any)
+
+ ### S3
+
+ ### CloudFormation
+
+ ### CloudWatch
+
+ ### Route 53

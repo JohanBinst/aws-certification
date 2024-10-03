@@ -6,15 +6,15 @@ Different types of cloud computing
 
 ## 2. IAM - Identity and Access Management
 
-Users: mapped to a physical person, has a username and password for the AWS console
-Groups: collection of users under one set of permissions
-Policies: JSON documents that define permissions
-Roles: create roles and assign them to AWS resources
-Security: MFA + password policy
-AWS CLI: manage your AWS services using the command line
-AWS SDK: manage your AWS services using a programming language
-Access keys: access your AWS account using the CLI or SDK
-Audit: IAM Credential Report & IAM Access Advisor
+- Users: mapped to a physical person, has a username and password for the AWS console
+- Groups: collection of users under one set of permissions
+- Policies: JSON documents that define permissions
+- Roles: create roles and assign them to AWS resources
+- Security: MFA + password policy
+- AWS CLI: manage your AWS services using the command line
+- AWS SDK: manage your AWS services using a programming language
+- Access keys: access your AWS account using the CLI or SDK
+- Audit: IAM Credential Report & IAM Access Advisor
 
 ## 3. EC2 - Elastic Compute Cloud
 
@@ -48,6 +48,7 @@ Audit: IAM Credential Report & IAM Access Advisor
   - Cold HDD (sc1): low-cost HDD volume designed for less frequently accessed workloads
   - Magnetic (standard): previous generation HDD volume, low cost, low performance
 - Analogy: think of them as a network USB stick
+- Delete on termination: you can choose to keep the EBS volume or delete it when the EC2 instance is terminated (by default: the root EBS volume is deleted, but additional volumes are kept)
 - exam keywords: block storage, persistent, EBS volumes
 
 ### EFS
@@ -59,7 +60,6 @@ Audit: IAM Credential Report & IAM Access Advisor
 - To move to another AZ, you need to create a snapshot of the EFS and copy it to another AZ
 - EFS have a provisioned capacity (size in GBs and IOPS)
 - You get billed for the provisioned capacity
-- Delete on termination: you can choose to keep the EBS volume or delete it when the EC2 instance is terminated (by default: the root EBS volume is deleted, but additional volumes are kept)
 - exam keywords: network drive, scalable, multiple instances
 
 ### Amazon FSx for Windows File Server
@@ -394,7 +394,6 @@ exam keywords: analyze data in S3, serverless, SQL
 - Lightsail: Virtual private server (VPS) service
 
 ## 9. Deployments
-
 ### CloudFormation
 - [CloudFormation](https://aws.amazon.com/cloudformation/) - Infrastructure as Code (IaC) service that helps you model and set up your AWS resources so you can spend less time managing those resources and more time focusing on your applications
 - CloudFormation templates are written in YAML or JSON
@@ -1098,6 +1097,8 @@ Pricing depends on:
     - Outbound data transfer are tiered for volume discounts
     - Inbound data transfer is free
 
+![SSD vs HDD](ssd-hdd.png)
+
 #### Pricing for RDS
 - per hour billing
 - Database charateristics:
@@ -1494,3 +1495,6 @@ Pricing depends on:
 - [Managed Services](https://aws.amazon.com/managed-services/) - Managed Services for AWS
 - AMS Team operates AWS on your behalf, providing a secure and compliant AWS Landing Zone, a proven enterprise operating model, on-going cost optimization, and day-to-day infrastructure management
 - exam keywords: managed services, secure, compliant
+
+## to know
+Handful of services that are considered global services such as IAM, STS Route 53, CloudFront, and WAF.
