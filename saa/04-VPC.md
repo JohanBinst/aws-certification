@@ -1,4 +1,4 @@
-# VPC
+# 4 VPC
 ## VPC Sizing and structure
 
 ## Custom VPC's
@@ -65,3 +65,63 @@ IPv6 addresses are public by default and are assigned to the instance directly. 
 
 ### Bastion Hosts and Jump Boxes
 Bastion hosts are instances that sit in a public subnet inside a VPC and are used to manage incomming connections. And then they access the internal VPC ressources. Bastion hosts are used to secure the VPC by not allowing direct access to the internal ressources. Bastion hosts are also used to monitor and log all the connections to the VPC.
+
+## Stateful and Stateless firewalls
+In an application wether the traffic is inboud or outbound depends on the perspective of the firewall. If the firewall is protecting an API server:
+  - the traffic coming from the front-end is inbound traffic and the traffic going to the front-end is outbound traffic.
+  - But an update request from the API server to an update server is inbound traffic from the perspective of the API server and outbound traffic from the perspective of the update server.
+
+### Stateful and Stateless firewalls
+1. Stateless firewalls don't keep track of the state of the connection:
+  - You have to specify the **rules for both the inbound and outbound** traffic. If you allow inbound traffic, you have to allow the outbound traffic as well.
+  - The request component is always to a well known port (inbound or outbound). The response component is often to an ephemeral port (outbound or inbound). That's why the response component often allows the full range of ephemeral ports. This is a security risk.
+
+2. Stateful firewalls **keep track of the state** of the connection:
+  - You only have to specify the rules for the **inbound traffic**.
+  - The firewall will **automatically allow the response** traffic to go back out. The firewall keeps track of the state of the connection and allows the response traffic to go back out.
+
+## Network Access Control Lists (NACL's)
+A network access control list (ACL) is an **optional layer of security** for your VPC that acts as a firewall for controlling traffic in and out of one or more subnets. You might set up network ACLs with rules similar to your security groups in order to add an additional layer of security to your VPC.
+
+NACL's:
+- are stateless. Request and response seen as different traffic.
+- only impacts data crossing subnet boundaries. Traffic within the subnet is not impacted by NACL's.
+- can explicitly allow or deny traffic.
+- IPs/CIDR, Port and protocol can be used to define the rules. No logical resources like security groups.
+- can only by assigned to subnets, not to AWS resources.
+- Use together with Security Groups to add explicity DENY rules (BAD IPs/Nets). Use SG groups to allow traffic.
+- Each subnet can have zero or 1 NACL (default or Custom). Each NACL can be associated with multiple subnets.
+
+## Security Groups
+Security groups are stateful firewalls: it detecs response traffic automatically.
+- Response of allowed (outbound or inbound) request is allowed.
+- There is no explicit DENY rule, only explicit ALLOW rules or implicit DENY. **Use with NACL's to add explicit DENY rules.** --> can't block bad actors(IPs) without explicit DENY. Use NACL's for that.
+- Layer 7 layer so supports IP/CIDR, Port, Protocol and logical resources like EC2 instances. Including other security groups and itself.
+- SG are attached to ENI's(Elastic Network Interfaces) and NOT to instances (even if the UI shows it this way). You actually **attach the SG to the primary ENI of the instance** but not the actual instance. (important for exam)
+
+## Network Address Translation (NAT) & NAT Gateway
+
+### NAT Gateway
+A NAT Gateway is a managed service that allows instances in a private subnet to access the internet.
+Used for IP masquerading: use a single IP address to hide multiple private IP addresses.
+
+The NAT gateway uses a translation table to translate the private IP addresses of multiple instances in the private subnet and changes source of packets to it's own (internal)source address. Normally a NAT Gateway has a public IP address but not in AWS, because nothing inside VPC has a public IP address. You have to use a VPC router and Internet Gateway to access the internet from a VPC. So the NAT Gateway has a default route in the VPC router that points to the Internet Gateway. The Internet Gateway changes the packet source address to the NAT Gateway public address.
+- The NAT Gateway runs from a public subnet
+- it uses Elastic IPs (static IPv4 Public)
+- AZ resilient service (high availability in that AZ)
+- For region resiliece - use NAT Gateway in each AZ and use a Route Table in each AZ with that NAT Gateway as the target. + 1 VPC router and 1 Internet Gateway (regional services)
+- NAT Gateway is managed by AWS so AWS manages the performance, scaling(up to 45 Gbps), patching, etc.
+- costs based on duration and data volume processed. Not free tier eligble.
+
+#### Important for exam:
+- 1 NAT Gateway per AZ. If you want region resilience, you need a NAT Gateway for every AZ you use in that region.
+- NAT Gateway is only for **IPv4 traffic only** it doesn't work with IPv6 traffic. For IPv6 traffic you use an Internet Gateway directly (Egress Only IGW = outbound only). IPv6 addresses in AWS are publicly routable by default so you don't need NAT for IPv6.
+- **NAT Gateways don't support Security Groups.** You have to use NACL's to control the traffic (always exam question)
+
+### NAT Instance
+Network Address Translation is a process of giving a private resource outgoing only access to the internet.
+
+A NAT instance is an EC2 instance that runs the NAT process. All maintenance, perfomance, scaling, etc. is managed by you. You can use this option if you want more customization and control over the NAT process or also use the instance for other purposes: like a Bastion host or port forwarding. Or if you want to reduce costs during testing or development.
+
+#### Important for exam
+EC2 instance **filters the traffic** to handle only traffic with it's **own source or destination IP**. This will cause the NAT instance to malfuction because it won't handle other traffic. So you have to disable the feature `Source/Destination Checks` on that EC2 instance.

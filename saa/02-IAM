@@ -1,4 +1,4 @@
-# IAM
+# 2 IAM
 
 ## Identity Policies
 - Identity Policies are JSON documents that define allow or deny permissions for an identity (user, group, or role) in AWS.
