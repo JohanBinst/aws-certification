@@ -34,7 +34,7 @@ EXAM: Lambda function timeout 900s (15 minutes). Anything beyond 15 mins can't u
 
 #### Lambda Networking Modes
 1. Public (Default)
-2. VPC
+2. Private (in VPC)
 
 1. Public: Could access Public AWS svc's like SQS, DynamoDB, or external like IMDB
 - Lambda functions have no access to VPC unless public IPs are provided and security controls allow external access
