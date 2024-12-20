@@ -255,9 +255,9 @@ Kinesis data streams are a real-time, scalable streaming service within AWS desi
 - Ideal for dashboards and large scale real time analytics needs
 - Kinesis data firehose allows the long term persistent storage of kinesis data onto services like S3
 - Producers send data into a kinesis STREAM, which can scale from low to near infinite data rates
--- Streams store a 24-hour moving window of data
---- This storage is included and can be increased to MAX 365 days of moving data window (add'l costs)
---- Multiple consumers access data from this moving window
+  - Streams store a 24-hour moving window of data
+    - This storage is included and can be increased to MAX 365 days of moving data window (add'l costs)
+    - Multiple consumers access data from this moving window
 
 ### Kinesis VS SQS
 - SQS = decoupling, asynchronous communications. No message persistence, no window of data stored
@@ -266,7 +266,7 @@ Kinesis data streams are a real-time, scalable streaming service within AWS desi
 ## Kinesis Data Firehose
 Fully managed service to load data for data lakes, data stores (like S3), and analytics svc's -> This lets data be persisted beyond the rolling window of Kinesis Data Streams
 - Auto scaling, fully serverless, resilient
-EXAM - NEAR real-time delivery (~60s) which is unlike the main Kinesis Data Stream which offers real-time delivery
+EXAM - `NEAR real-time` delivery (~60s) which is unlike the main Kinesis Data Stream which offers real-time delivery
 - Firehose supports transformation of data on the fly using Lambda
 - Valid destination endpoints for Firehose: HTTP, Splunk, Redshift, ElasticSearch, S3
 
@@ -343,7 +343,7 @@ Extract, transform (using script), and load Jobs
 ## Amazon MQ
 AmazonMQ is an open-source message broker; an AWS implementation of Apache ActiveMQ. Like a merge of SNS/SQS
 - Supports open standards such as JMS, AMQP, MQTT, OpenWire and STOMP
--- If you need to support any of these, and use QUEUES and TOPICS - AmazonMQ is the tool to use.
+  - If you need to support any of these, and use QUEUES and TOPICS - AmazonMQ is the tool to use.
 - Provides Queues and Topics (like SQS/SNS); one-to-one or one-to-many
 EXAM: Amazon MQ is NOT a public service; runs on a VPC and requires private networking to access it
 EXAM: AWS Integration required? Use SNS/SQS and not MQ.
