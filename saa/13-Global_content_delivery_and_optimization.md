@@ -7,7 +7,7 @@ CloudFront is a Content Delivery network (CDN) within AWS.
 - Edge Locations: Local cache of your data
 - Regional Edge Cache: Larger version of an Edge Location, provides another layer of caching
 NOTE: Can use SSL certs with CloudFront as it integrates with AWS Certificate Manager (ACM) for HTTPS
-NOTE: CloudFront is for DOWNLOAD operations only, uploads go directly to Origin with NO WRITE CACHING. CloudFront does Read-Only caching
+NOTE: CloudFront is for DOWNLOAD operations only, uploads go directly to Origin with NO WRITE CACHING. CloudFront only does Read-Only type of caching.
 
 ## CloudFront (CF) - Behaviors
 CloudFront Behaviors control much of the TTL, protocol and privacy settings within CloudFront
@@ -16,34 +16,46 @@ CloudFront Behaviors control much of the TTL, protocol and privacy settings with
 
 ## CloudFront - TTL and Invalidations
 How CloudFront handles object expiry and invalidation
-- Covering
-
 - TTL: Object considered not expired when within its TTL
-Default TTL: 24 hours (validity period)
-Minimum TTL / Maximum TTL can be set
+- Invalidations:
+More frequent cache hits result in lower origin load -> better performane of application (goal of CloudFront)
+Problem: If old version of object is cached and newer version is uploaded in origin -> cached version has to expire in edge location cache because edge location is not notified when newer version exists. Only when cache expires and a check at the origin is performed.
+TTL (Time To live) value can be set in 3 ways:
+1. Default TTL: 24 hours (validity period) (EXAM) -> is used when no TTL is specified (eg in headers)
+2. Minimum TTL / Maximum TTL can be set (EXAM) -> are limiters for the specified TTL: values below minimum or above maximum are limited to minimum or maximum TTL -> min/max TTL value is used if outside of range
+3. Specific TTLs using Origin Headers that can be set in Custom Origins or S3 (object metadata)
+- Origin Header: Cache-Control max-age(seconds) ->specifies seconds until expiry
+- Origin Header: Cache-Control s-maxage(seconds) -> specifiesseconds until expiry (same as max-age)
+- Origin Header: Expires(DateTime) -> specifies Date & Time for expiry
+EXAM: need to know headers
 
-You can specify TTLs using headers.
--- Origin Header Types:
---- Cache-Control max-age (seconds until expiry)
---- Cache-Control s-maxage (seconds until expiry)
---- Expires (Date & Time for expiry)
-
-- Cache Invalidation: Performed on a distribution and applied to all Edge Locations
--- immediately expires objects regardless of their TTL based on the invalidation pattern that you specify
--- Instead of Cache Invalidation, you can use Versioned File Names (whiskers1_v1.jpg // _v2.jpg // _v3.jpg) which is a better practice
+2. Cache Invalidation: Are performed on a distribution and applied to all Edge Locations (takes time to implement)
+- Immediately expires objects regardless of their TTL based on the invalidation pattern that you specify e.g. /images/whiskers1.jpg, /images/whiskers* (wildcard), /images/* or /* (all objects are immediatly invalidated)
+- Instead of Cache Invalidation, you can use Versioned File Names (whiskers1_v1.jpg // _v2.jpg // _v3.jpg) which is a better practice (always in EXAM !!!)
+  - versioning is best practice because new filename makes sure latest version is always recovered
+  - and logging is more effective because you know which actual file is being used
+  - you keep all version of all versions
+!!  Don't confuse versioned filenames with S3 object versioning (is different)
 
 ## AWS Certificate Manager
-A service which allows the creation, management and renewal of certificates. It allows deployment of certificates onto supported AWS services such as CloudFront and ALB.
-- HTTP was/is simple and insecure. HTTPS introduced a layer of encryption to HTTP encrypting the data in-transit. HTTPS also allows for servers to prove their identity with Certificates using SSL/TLS
--- These certificates get signed by a trusted authority AKA Chain of Trust
-
+A service which allows the creation, management and renewal of certificates. It allows deployment of certificates onto supported AWS services, mainly `CloudFront`,`ELB` but also Cognito, CloudFormation, API GateWay, Elastic Beanstalk
+- HTTP was/is simple and insecure.
+- HTTPS introduced a layer of encryption to HTTP encrypting the data in-transit.
+- HTTPS also allows for servers to prove their identity with Certificates using SSL/TLS 
+- These SSL/TLS certificates get signed by a trusted authority AKA Chain of Trust
 - ACM can be a Public or Private Certificate Authority (CA)
-EXAM - ACM can generate or import certificates. If self-generated, it can auto-renew. If imported, you are responsible for renewal
-EXAM - Certificates can only be deployed out to SUPPORTED services (Eg. pretty much just CloudFront and ALBs, specifically NOT EC2)
-EXAM - Reminder, cannot use ACM with EC2
-EXAM - Certs can't leave the region they are generated/imported into; cert are region specific
-EXAM - To use a cert with an ALB in ap-southeast-2, you need a CERT IN ACM in ap-southeast-2
-- EXAM -- GLOBAL services like CloudFront operate as though within us-east-1
+- Private CA: applications need to trust your private CA: private CA has to be added manually in computer build or with a policy that configures this trust
+- Public CA: Browsers trust a list of providers, which can trust other providers (chain of trust)
+- S3 doesn't use ACM
+  
+- EXAM - ACM can generate or import certificates. If self-generated, it can auto-renew. If imported, you are responsible for renewal
+- EXAM - Certificates can only be deployed out to SUPPORTED services (Eg. pretty much just CloudFront and ALBs, `specifically NOT EC2`)
+- EXAM - Certificates are always stored encrypted in ACM and deployed in a secure way in supported services
+- EXAM - Reminder, cannot use ACM with EC2: because with root access you can see unencrypted certificate -> goal of ACM is to secure the storage and deployment of your certificates
+- EXAM - ACM is regional service: `Certs can't leave the region they are generated/imported into` cert are region specific
+- EXAM - To use a cert with an ALB in ap-southeast-2, you need a CERT IN ACM in that region: ap-southeast-2 (ALWAYS EXAM question)
+- EXAM -- GLOBAL services like CloudFront operate as though within us-east-1 (like all global services) -> so you need ACM is us-east-1
+- EXAM - ACM comes up a lot about which certificates can be used in which regions (problem solving questions) -> solution in same region as service or us-east-1 if global service.
 
 ## Cloudfront and SSL/TLS
 - Each CloudFront distribution gets a Default Domain Name (CNAME DNS record) when created
