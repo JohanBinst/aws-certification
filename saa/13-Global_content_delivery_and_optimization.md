@@ -58,16 +58,17 @@ A service which allows the creation, management and renewal of certificates. It 
 - EXAM - ACM comes up a lot about which certificates can be used in which regions (problem solving questions) -> solution in same region as service or us-east-1 if global service.
 
 ## Cloudfront and SSL/TLS
-- Each CloudFront distribution gets a Default Domain Name (CNAME DNS record) when created
-- SSL supported by default as long as you use *.cloudfront.net cert
--- Can have Alternate Domain Names Eg. cdn.catagram.com
---- You need to verify ownership using a matching certificate
-- Global service? Cert must be in us-east-1, Eg. CloudFront
+- Each CloudFront distribution gets a Default Domain Name (CNAME DNS record) when created: eg d111111abcdef8.cloudfront.net
+- SSL supported by default as long as you use the Default Domain name because certificate uses *.cloudfront.net cert (* = wildcard)
+  - Can have Alternate Domain Names Eg. cdn.catagram.com using DNS provider like route 53 that points to default domain 
+  - You need to verify ownership using a matching certificate for the alternate domain name
+  - you can allow both HTTP or HTTPS traffic. Or point HTTP traffic to HTTPS. Or allow only HTTPS
+  - for HTTPS you either generate a certificate or import in ACM a cert that must be in us-east-1, Eg. CloudFront (Will come up in the exam: CloudFront = us-east-1)
 
 When using CloudFront, you actually have TWO SSL connections:
-1. Viewer => CloudFront
-2. CloudFront => Origin
-- Both need valid PUBLIC certificates. Self-signed certs don't work with CloudFront
+1. Viewer => CloudFront: PUBLIC certificate issued by a trursted Certificate Authority( Comodo, DigiCert or ACM (us-east-1)
+2. CloudFront => Origin: if S3 no need for certificate because S3 handles this. If ALB or Custom Origin (EC2 or On-Prem): public trusted CA authority or ACM for ALB, trusted CA authority only for Custom Origin because no support for ACM.
+- Both need valid PUBLIC certificates. Self-signed certs will not work with CloudFront (exam)
 
 ## CloudFront (CF) - Origin Types & Origin Architecture
 CloudFront origins store content distributed via edge locations.
@@ -78,6 +79,7 @@ CloudFront origins store content distributed via edge locations.
 - AWS Media Package Channel Endpoints
 - AWS Media Store Container Endpoints
 - Everything else (web servers); Custom Origins. Note: An S3 as a static website is treated not as S3 but as a Web Server aka custom origin
+- EXAM: if question about control of protocol (HTTP/HTTPS), port (80/443) or certificate version -> Custom Origin is the answer because you can't modifiy this for S3
 
 ## DEMO - CloudFront (CF) - Adding a CDN to a static Website
 Implement a CloudFront distribution using an S3 bucket as the origin.
