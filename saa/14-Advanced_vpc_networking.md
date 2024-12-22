@@ -3,15 +3,27 @@
 ## VPC Flow Logs
 VPC Flow logs is a feature allowing the monitoring of traffic flow to and from interfaces within a VPC
 - VPC Flow logs can be added at a VPC, Subnet or Interface level.
-- Flow Logs DON'T monitor packet contents ... that requires a packet sniffer.
+- Flow Logs DON'T monitor packet contents (that requires a packet sniffer) only packet meta data
 - Flow Logs can be stored on S3 or CloudWatch Logs
-NOTE: VPC flow logs ONLY CAPTURE METADATA, NOT CONTENTS
+EXAM: VPC flow logs ONLY CAPTURE METADATA, NOT CONTENTS
 
-Flow Logs can monitor at 3 levels: 1. VPC 2. Subnet 3. ENIs directly. And these logs capture from capture point and down (so if VPC flow log, it also captures Subnet and ENIs)
-EXAM:  - Flow Logs NOT real time
+Flow Logs can monitor at 3 levels:
+1. VPC (monitors VPC + Subnets in VPC + ENI's in subnets)
+2. Subnet (monitors Subnet + ENI's in subnet)
+3. ENIs directly (Elastic Network Interface)
+--> These logs capture meta data from capture point and down (so if VPC flow log, it also captures Subnet and ENIs metadata)
+EXAM:  - Flow Logs is NOT real time data !! --> real time data requires
 - Log Destinations: S3 or CloudWatch Logs
--- Athena can query the logs in S3
+  - S3 distination: use when 3rd party software for log analysis or with Athena (SQL like query to access data and be billed only on data being read)
+  - CloudWatch logs destination: use when integration with other AWS services: eg stream data and access programatically or through console
 - Flow Logs can capture ACCEPTED, REJECTED, or ALL METADATA
+
+### VPC flow log records
+VPC flow logs captures the meta data of packets in the form of VPC flow log records. Which is a collection of rows and each row has the following fields (`most important fields`):
+version, account-id, interface-id, `source-address`, `destination-address`, `destination-port`, `protocol`, packets, bytes, start, end, `action`, log-status
+2 ACC-ID eni-ID, `119.18.34.78`, `10.16.48.20` `0` `0` `1` 4 336 1432917027 1432917142 `ACCEPT` OK
+protocol number: ICMP = 1, TCP=6, UDP=17 (might feature on exam as elimnation but good to know for daily usage)
+action: ACCEPTED, REJECTED: means if packet is accepted or rejected (blocked) by Security Group or NACL (Network Acces Control List)
 
 ## Egress-Only Internet gateway
 Egress-Only internet gateways allow OUTBOUND (and response) only access to the public AWS services and Public Internet for IPv6 enabled instances or other VPC based services
