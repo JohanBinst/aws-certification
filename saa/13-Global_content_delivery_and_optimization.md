@@ -41,13 +41,13 @@ EXAM: need to know headers
 A service which allows the creation, management and renewal of certificates. It allows deployment of certificates onto supported AWS services, mainly `CloudFront`,`ELB` but also Cognito, CloudFormation, API GateWay, Elastic Beanstalk
 - HTTP was/is simple and insecure.
 - HTTPS introduced a layer of encryption to HTTP encrypting the data in-transit.
-- HTTPS also allows for servers to prove their identity with Certificates using SSL/TLS 
+- HTTPS also allows for servers to prove their identity with Certificates using SSL/TLS
 - These SSL/TLS certificates get signed by a trusted authority AKA Chain of Trust
 - ACM can be a Public or Private Certificate Authority (CA)
 - Private CA: applications need to trust your private CA: private CA has to be added manually in computer build or with a policy that configures this trust
 - Public CA: Browsers trust a list of providers, which can trust other providers (chain of trust)
 - S3 doesn't use ACM
-  
+
 - EXAM - ACM can generate or import certificates. If self-generated, it can auto-renew. If imported, you are responsible for renewal
 - EXAM - Certificates can only be deployed out to SUPPORTED services (Eg. pretty much just CloudFront and ALBs, `specifically NOT EC2`)
 - EXAM - Certificates are always stored encrypted in ACM and deployed in a secure way in supported services
@@ -60,7 +60,7 @@ A service which allows the creation, management and renewal of certificates. It 
 ## Cloudfront and SSL/TLS
 - Each CloudFront distribution gets a Default Domain Name (CNAME DNS record) when created: eg d111111abcdef8.cloudfront.net
 - SSL supported by default as long as you use the Default Domain name because certificate uses *.cloudfront.net cert (* = wildcard)
-  - Can have Alternate Domain Names Eg. cdn.catagram.com using DNS provider like route 53 that points to default domain 
+  - Can have Alternate Domain Names Eg. cdn.catagram.com using DNS provider like route 53 that points to default domain
   - You need to verify ownership using a matching certificate for the alternate domain name
   - you can allow both HTTP or HTTPS traffic. Or point HTTP traffic to HTTPS. Or allow only HTTPS
   - for HTTPS you either generate a certificate or import in ACM a cert that must be in us-east-1, Eg. CloudFront (Will come up in the exam: CloudFront = us-east-1)
@@ -93,8 +93,9 @@ Note: You can now access CDN cached files that are cached in Edge Locations. You
 
 ## Securing CF and S3 using OAI
 Origin Access Identities (OAI) are a feature where virtual identities can be created, associated with a CloudFront Distribution and deployed to edge locations.
-- Access to an s3 bucket can be controlled by using these OAI's - allowing access from an OAI, and using an implicit DENY for everything else.
--- They are generally used to ensure no direct access to S3 objects is allowed when using private CF Distributions.
+- OAI can only be used when using S3 bucket as an origin (not custom origins like: EC2, ALB, On-Premise servers, static S3 website is also a custom origin !!)
+- Access to an S3 bucket can be controlled by using these OAI's - allowing access from an OAI, and using an implicit DENY for everything else.
+- They are generally used to ensure no direct access to S3 objects is allowed when using private CF Distributions.
 
 ### Origin-side Security
 #### S3 Origin
@@ -103,6 +104,7 @@ OAI's are a type of Identity that are associated with CF Distros to 'become' tha
 - Explicit Allow on S3 Policy for OAI
 - Best practice: Create 1 OAI for 1 CF Distro
 #### Custom Origin - Custom Headers or Traditional Firewall
+There are 2 ways to secure Custom Origins:
 1. Utilize custom headers and Viewer control policy (HTTPS), then a related Origin Control Policy that has a required Custom Header attached. Origin requires the custom header
 2. Traditional Security Method: IP Ranges of CloudFront with access to a Firewall
 
@@ -138,8 +140,8 @@ AWS Global Accelerator is designed to improve global network performance by offe
 - Designed to optimize the flow of data from user to AWS infrastructure
 - Reduce number of "hops"
 - When to use CloudFront VS Global Accelerator?
--- CloudFront is focused on improving content delivery to end-users via Edge Caching. Question mentions caching? Prolly CloudFront
--- Global Accelerator is focused on optimizing traffic routing to your applications -- by entering the network closer to the customer. Question mentions TCP/UDP? Prolly Global Accelerator
+  - CloudFront is focused on improving content delivery to end-users via Edge Caching. Question mentions caching? Prolly CloudFront
+  - Global Accelerator is focused on optimizing traffic routing to your applications -- by entering the network closer to the customer. Question mentions TCP/UDP? Prolly Global Accelerator
 Global Accelerator is a good fit for non-HTTP use cases, such as gaming (UDP), IoT (MQTT), or Voice over IP, as well as for HTTP use cases that specifically require static IP addresses or deterministic, fast regional failover.
 
 ### Global Accelerator Resource: https://aws.amazon.com/global-accelerator/faqs/
