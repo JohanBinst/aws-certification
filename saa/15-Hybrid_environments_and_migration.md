@@ -207,16 +207,24 @@ EXAM - Key words to look for:
 - integrates with Directory Service and YOUR OWN directory
 
 ## FSx For Lustre
-FSx for Lustre is a managed file system which uses the FSx product designed for high performance computing
+FSx for Lustre is a managed file system which uses the FSx product designed for high performance computing on Linux clients (POSIX)
 - It delivers extreme performance for scenarios such as BIG DATA, MACHINE LEARNING and FINANCIAL MODELING
--- FSx for Lustre is a managed Lustre high compute system. Linux clients (POSIX)
+ - FSx for Lustre is a managed Lustre high compute system. Linux clients (POSIX)
 - Two deploment types: Persistent or Scratch
--- Scratch: highliy optimized for short-term. No replication and fast. not HA
--- Persistent: Longer term, high avail in one AZ, self-healing
-EXAM - If Lustre, POSIX mentioned... FSx for Lustre, ML/big data/fin-modeling
+ - Scratch: highliy optimized for short-term. No replication and fast. not HA
+ - Persistent: Longer term, high avail in one AZ, self-healing
+- Accessible over VPN or Direct Connect
+EXAM - If Lustre, POSIX mentioned... FSx for Lustre, ML/big data/fin-modeling, SageMaker
 
 ## AWS Transfer Family
-Managed file transfer service using these protocols: SFTP, FTP, FTP Transfer, AS2
-EXAM - supports transferring data over the following protocols: SFTP, FTPS, and FTP transfer
+Managed file transfer service TO or FROM S3 and EFS using these protocols: SFTP, FTPS, FTP Transfer, AS2
+EXAM - supports transferring data over the following protocols: SFTP, FTPS, and FTP transfer without managing a transfer server (no admin overhead: identities, workflows, front end, ...)
+- Identities can be handeled by AWS Transfer Family or Directory or Custom (Lambda/API Gateway)
 - Managed File Transfer Workflows (MFTW) - serverless file workflow engine (for tagging and stuff)
+- Transfer Family can be accessed trough endpoints:
+   - public: public endpoint (SFTP only) -> can't control who can access it because is public 
+   - VPC-internet: SFTP, FTPS and AS2. Accessible from public internet through Elastic IP or via Direct connect or VPN (or within VPC)
+   - VPC-Internal: SFTP, FTPS, A2 and FTP (unecrypted). Accessible only within VPC or via Direct Connect or VPN
 - Using FTP? Since not secure, you can only use FTP protocol within VPC (not public)
+
+Direct Connect is not encrypted by default, you need public VIF + Site to Site VPN
