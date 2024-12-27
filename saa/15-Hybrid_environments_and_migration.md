@@ -142,9 +142,10 @@ What are directories? Identity and asset info storage. Stores objects with struc
 - Users, devices, groups, servers, file shares -- things that can be objects in a directory
 
  AWS Directory Service is an AWS managed implementation of a directory that runs in a VPC
-- High availability, deploy into multiple AZs
-- Amazon Workspaces NEEDS the AWS Directory Svc to function
-- can be isolated or integrated with an on-premise system
+ - services have to run from within VPC or configure private connectivity to that VPC
+ - To have High availability you need to deploy AWS Directory Service into multiple AZs
+ - Amazon Workspaces NEEDS the AWS Directory Service to function
+ - can be isolated or integrated with an on-premise system or act as a proxy back to on-premises
 
 ### Directory Service - Three Modes
 1. Simple AD - An implementation of Samba 4 (compatibility with basics AD functions)
@@ -152,32 +153,39 @@ What are directories? Identity and asset info storage. Stores objects with struc
 - 500 - 5000 users
 - Simple AD is based off of Samba 4 (an open-source version of Microsoft AD)
 - Simple AD designed to be used in isolation
+-  use when only AD service needed in the cloud (eg workspaces)
 2. AWS Managed Microsoft AD - An actual Microsoft AD DS Implementation
 - AWS presense while having an existing on-premises directory
 - Primary location is at AWS. TRUST relationships created between AWS and on-premmise
+- connection through VPN or Direct Connect between AD instance in VPC and AD instance on-premise
+- use when hybrid AD service needed in the cloud (eg workspaces) and on-premise
+- EXAM: question mentioning MS AD, on-premise MS AD and trust relationship -> AWS Managed AD is probably the answer
 3. AD Connector which proxies requests back to an on-premises directory
 - An entity made to integrate with AWS services. It has NO local functionality - great for hosting Workspaces
 - If private connectivity fails, AD fails and AWS-side related svd would be interrupted
+- use when needing to proxy on-premise AD service to the cloud because only 1 service in the cloud requires AD -> proxy on-premise AD to the VPC through VPN or Direct Connect. Service in VPC that needs AD connects to AD connector (proxy).
 
 ### When to pick one of the 3 ADs?
 Simple AD -  The default. Simple reqs. A directory in AWS
-Microsoft AD - Apps in AWS which req MS AD, or you need to TRUST AWS AD Directory Service
-AD Connector - To use AWS p&s that require a directory without actually housing one on AWS side (as you have it on prem), use AD connector
+Microsoft AD - Apps in AWS which require actual implementation of MS AD, or you need to TRUST AD Directory Service already running on-prem
+AD Connector - To use AWS services that require a directory without actually storing any directory info (username, passwords etc) in the cloud and you have an Active Directory on-premise, use AD connector
 
 ## DataSync
 AWS DataSync is a product which can orchestrate the movement of large scale data (amounts or files) from on-premises NAS/SAN into AWS or vice-versa
 - Data transfer service To and FROM AWS
 - Designed to work at HUGE scale
 - Keeps metadata (permissions/timestamps)
-- Built-in data validation
+- Built-in data validation: assure data that arrives in AWS is the same as the original data
 - Scalable: 10Gbps/agent (~100TB/day)
 - FEATURES EVERYWHERE... Bandwidth limiters, incremental/scheduled xfer options, compression and encryption, auto recovery from transit errors, svc integration with S3 EFS FSx, bidirectional transfer
 EXAM - The DataSync agent needs to be intalled LOCALLY on-prem
 EXAM - communicates via NFS/SMB w/ on-prem storage
+EXAM - Encryption in-transit using TLS between DataSync agent (on-prem) and DataSync Endpoint (AWS AZ)
+EXAM - Bi-directional trasnfer of large data between on-prem and S3, EFS or FSx for Windows Servers
 
 ### DataSync Components
-- tasks: a "job"
-- agent: the software living on-prem that reads/writes to on-prem data stores using NFS/SMB
+- tasks: a "job" -> defines WHAT is being synced, FROM where and To where
+- agent: the software installed on-prem that reads/writes from and to on-prem data stores using NFS/SMB
 - location: every task has a TO and FROM location
 
 ## FSx for Windows Servers
@@ -185,7 +193,7 @@ FSx for Windows Servers provides a native windows file system as a service which
 - FSx is an advanced shared file system accessible over SMB, and integrates with Active Directory (either managed, or self-hosted).
 - It provides advanced features such as VSS, Data de-duplication, backups, encryption at rest and forced encryption in transit.
 - Integrats with Directory Service or Self-Managed Active Directory
-- Single or Multi-AZ within a VPC
+- Single or Multi-AZ mode within a VPC
 - on-demand/scheduled backups
 - accessible using VPC, peering, VPN, Direct Connect
 - FSx is dedicated to Windows Environments, the similar EFS is for Linux/Unix
