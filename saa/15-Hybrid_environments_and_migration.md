@@ -190,15 +190,21 @@ EXAM - Bi-directional trasnfer of large data between on-prem and S3, EFS or FSx 
 
 ## FSx for Windows Servers
 FSx for Windows Servers provides a native windows file system as a service which can be used within AWS, or from on-premises environments via VPN or Direct Connect
-- FSx is an advanced shared file system accessible over SMB, and integrates with Active Directory (either managed, or self-hosted).
-- It provides advanced features such as VSS, Data de-duplication, backups, encryption at rest and forced encryption in transit.
+- FSx is an advanced shared file system accessible over SMB, and integrates with Active Directory (supports AWS MS Active Directory or on-premise Active Directory).
+- It provides advanced features such as Data de-duplication, backups, encryption at rest and forced encryption in transit and VSS (user driven resotores of previous version)
 - Integrats with Directory Service or Self-Managed Active Directory
 - Single or Multi-AZ mode within a VPC
 - on-demand/scheduled backups
 - accessible using VPC, peering, VPN, Direct Connect
-- FSx is dedicated to Windows Environments, the similar EFS is for Linux/Unix
+- FSx is fileshare system dedicated to Windows Environments, the similar EFS is for Linux/Unix
 - File level versioning; support volume shadow copies; file-level restores
-EXAM - Key words to look for: VSS (user driven restores), native file system over SMB (SMB=windows), uses Windows permissions model, supports DFS (distributed file system), integrates with Directory Service and YOUR OWN directory
+
+EXAM - Key words to look for:
+- VSS (user driven restores)
+- native file system over SMB (SMB=windows)
+- uses Windows permissions model of folders and files
+- supports DFS (distributed file system) -> scale-out easily file share structure easily in Windows enivironment
+- integrates with Directory Service and YOUR OWN directory
 
 ## FSx For Lustre
 FSx for Lustre is a managed file system which uses the FSx product designed for high performance computing
