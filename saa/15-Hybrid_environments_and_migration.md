@@ -3,7 +3,7 @@
 ## Border Gateway Protocol 101
 Introduction to the Border Gateway Protocol (BGP) which is a routing protocol used by some AWS services such as Direct Connect and Dynamic Site to Site VPNs.
 - BGP made of AS (autonomous systems). Routers controlls by one entity; a network in BGP. Your whole company's network system is a 'black box' abstraction, BGP only cares about ingress/egress
--- Autonomous System Numbers (ASNs) are unique and allocated by IANA (0-65535), 64512-65534 are PRIVATE
+  - Autonomous System Numbers (ASNs) are unique and allocated by IANA (0-65535), 64512-65534 are PRIVATE
 - BGP operates over tcp/179 -- reliable
 - BGP not automatic, peering is manually configured
 - BGP is a PATH-VECTOR protocol; it exchanges the best path to a destination between peers...best path (AKA shortest path) is called ASPATH
@@ -19,10 +19,10 @@ IPsec VPN negotiation occurs in two phases:
 - asymmetric encryption used to establish symmetric encryption
 
 ### IPSec - Two Phases
-IKE Phase 1: Internet Key Exchange. IKE v1 and IKE v2 (v2 is newer)
+IKE Phase 1 (slower): Internet Key Exchange. IKE v1 and IKE v2 (v2 is newer)
 - authentication with asummetric encryption to agree on and create a shared symmetric key
 - "Diffie-Helman Private Key"/DH Key created by both sides in Phase 1.. this is what actually creates the symmetrical key for phase 2
-IKE Phase 2: Getting VPN up and running
+IKE Phase 2 (faster): Getting VPN up and running
 - built on phase one using the symmetric key created in phase 1
 - Phase 2 can be town down and rebuilt when needed, phase 1 can stay
 
@@ -50,6 +50,7 @@ EXAM - Highly Available
 - "Route Propagation": if enabled, means routes are added to RTs automatically
 
 EXAM - AWS speed limitation of VPNs 1.25Gbps
+EXAM - Virtual Private Gateway limitation is also 1.25Gbps -> 2 tunnels will be limited to 1.25Gbps in total
 EXAM - Latency is inconsistent as it is through Public Internet. If need low latency, maybe Direct Connect
 
 ## Direct Connect (DX) Concepts
@@ -57,11 +58,14 @@ AWS Direct Connect links your internal network to an AWS Direct Connect location
 
 An AWS Direct Connect location provides access to AWS in the Region with which it is associated. You can use a single connection in a public Region or AWS GovCloud (US) to access public AWS services in all other public Regions.
 
-Direct connect = physical connection. Between business premises <-> DX Location <-> AWS Region
+Direct connect = physical connection between business premises (owned by you) and DX Location (not owned by AWS) and AWS Region (owned by AWS)
 - 1, 10, or 100GBps
-- when you order DC, you're really ordering a Port Allocation at the DX Location
+- when you order Direct Connect (DX), you're really ordering a Port Allocation at the DX Location
 - Cannot access internet
-- DX Location is NOT owned by AWS (just has AWS space/equipment in it - called a "cage". And you'll have customer or comms partner Cage -- need to connect AWS / Customer router)
+- DX Location is NOT owned by AWS, it has 2 "cages":
+    - 1 cage for AWS owned equipment (AWS routers -> port allocation happens here): connected to AWS region
+    - 1 customer or shared partner Cage: with customer router and connected on premise router
+    - both cages are physically connected
 - Low latency, high speeds. No resilience (at it's literally 1 cable)
 - requires VIFs (virtual interfaces) for the networking over DX to AWS
 
@@ -78,9 +82,10 @@ How to use these things to achieve end-to-end encrypted access to private VPC ne
 ## Transit Gateway
 The AWS Transit gateway is a network gateway which can be used to significantly simplify networking between VPC's, VPN and Direct Connect.
 - It can be used to peer VPCs in the same account, different account, same or different region and SUPPORTS TRANSITIVE ROUTING between networks.
+- VPC peering can become complex when you have many VPCs, Transit Gateway simplifies this a lot
 - Single network object that is highly available and scalable
 - create "attachements" to other network types: valid attachments -> VPC, site-to-site VPN, DX Gateway
-- Can use "peering attachments" to ve cross-region/cross-account (cross acct = AWS Ram)
+- Can use "peering attachments" to ve cross-region/cross-account (cross account = AWS RAM Ressource Access Manager)
 - Supports transitive routing (which is basically why it exists, since VPCs don't which causes too much complexity)
 EXAM - REMEMBER: TRANSIT gateway supports TRANSITIVE ROUTING (which VPC peering can't do) -- this simplifies vpc-to-vpc
 
@@ -89,16 +94,16 @@ EXAM - REMEMBER: TRANSIT gateway supports TRANSITIVE ROUTING (which VPC peering 
 Storage gateway is a product which integrates local infrastructure and AWS storage such as S3, EBS Snapshots and Glacier.
 
 ### Storage Gateway - Volume Stored Mode
-EXAM - ALL stored locally, which means low latency access
-- Data copied into S3 with EBS Snapshots
-EXAM - Use: Full disk backups of servers
-EXAM - Use: Assists with disaster recovery; created EBS volumes in AWS
-EXAM - VSM does NOT improve or extend data center capacity
+EXAM - ALL stored locally on on-premise volume, which means low latency access
+- Data copied into S3 in the form of EBS Snapshots
+EXAM - Use: Full disk backups of volume
+EXAM - Use: Assists with disaster recovery through created EBS volumes from snapshots in AWS
+EXAM - VSM does NOT improve or extend data center capacity because volumes are stored fully on-premise.
 - Something something iSCSI
 
 ### Storage Gateway - Volume Cached Mode
 Instead of having a local storage volume on prem, you have a local cache. Actual data stored in S3, and does EBS Snapshot backups
-EXAM - Use Case: To extend your data center (since data is stored in S3 and only cached locally)
+EXAM - Use Case: To extend your data center (since data is stored in S3 and frequent accessed data is cached locally)
 
 ## Storage Gateway - Tape (VTL) - Virtual Tape Library
 Storage gateway in VTL mode allows the product to replace a tape based backup solution with one which uses S3 and Glacier rather than physical tape media

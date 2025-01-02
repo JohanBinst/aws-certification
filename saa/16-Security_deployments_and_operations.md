@@ -72,4 +72,5 @@ Guard Duty is an automatic threat detection service which reviews data from supp
 - CONTINUOUS SECURITY MONITORING SERVICE
 - Ingests Logs and Events
 
-### Inspector VS GuardDuty: If we try to describe it in a chronological fashion, you can have Inspector set up at the start when you deploy your applications, and then GuardDuty immediately after that in order to receive alerts on potential threats. Amazon Inspector provides you with security assessments of your applications’ settings and configurations while Amazon GuardDuty helps with analysing the entirety of your AWS accounts for potential threats.
+### Inspector VS GuardDuty
+If we try to describe it in a chronological fashion, you can have Inspector set up at the start when you deploy your applications, and then GuardDuty immediately after that in order to receive alerts on potential threats. Amazon Inspector provides you with security assessments of your applications’ settings and configurations while Amazon GuardDuty helps with analysing the entirety of your AWS accounts for potential threats.
