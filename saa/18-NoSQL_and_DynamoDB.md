@@ -73,7 +73,7 @@ DynamoDB Streams are a 24 hour rolling window of time ordered list of changes to
 
 ### DDB - Triggers
 - Streams are the foundation of Triggers
-- Triggers allow fo actions to take place in the event of data change, use can use Lambda to perform a compute action in response
+- Triggers allow fo actions to take place in the event of data change, use can use Lambda to perform a compute action in response. View type data is send with trigger (e.g. notification of new message can be send to users etc.)
 
 ## DynamoDB - Global Tables
 DynamoDB Global Tables provides multi-master global replication of DynamoDB tables which can be used for performance, High Avail or Disaster Recovery/Biz Continuity reasons.
@@ -98,31 +98,40 @@ Amazon DynamoDB Time to Live (TTL) allows you to define a per-item timestamp to 
 Amazon Athena is serverless querying service which allows for ad-hoc questions where billing is based on the amount of data consumed.
 - Athena is an underrated service capable of working with unstructured, semi-structured or structured data.
 - tl;dr take data stored in S3 and perform ad-hoc queries on that data. Pay only for the data consumed while running query (and s3 storage)
-- Uses process called "schema-on-read", a table-like translation --- original data on S3 never changed
+- Uses process called "schema-on-read", a table-like translation --> original data on S3 never changes !!
+- Usefull when loading or transformation of data isn't needed or desired (just query data)
 EXAM - Best option for querying AWS logs; VPC flow logs, CloudTrail, ELB Logs, cost reports, Glue, Web Server, etc
 - Athena Federated Query -- a way for Athena to query outside S3
-- Athena = ad-hoc. Redshift is not ad-hoc
+- Athena = occasional querries because you don't need to load data (stream is querried, no infrastructure (serverless). Redshift is not ad-hoc (not serverless, data is needed to load)
 
 ## Elasticache
-Elasticache is a managed in-memory cache which provides a managed implementation of the redis or memcacheD engines. Useful for READ-HEAVY workloads that demand low latency, scaling reads in a cost effective way and allowing for externally hosted user session state
-- in-memory database for high performance
-- Two engines:
-1. Redis. supports advanced data structures. Multi-AZ. Backup and restore.
-2. Memcached. Supports simple data structures. No backups. Multi-threaded
-- reduces database workloads
+Elasticache is a managed in-memory cache which provides a managed implementation of the redis or memcacheD engines. 
+- Useful for `READ-HEAVY workloads` that demand low latency
+- scaling reads in a cost effective way: in-memory database for high performance (reduces database workloads and costs (less reads))
+- allows for externally hosted user session state (if 1 EC2 instance fails another will take over but user session is kept alive, user doesn't notice)
+
+### Two engines are supported:
+1. Redis. supports advanced data structures (lists, sets, etc). Multi-AZ. Backup and restore. Transactions
+2. Memcached. Supports simple data structures (strings). No backups. Multi-threaded
 EXAM - Can store Session Data (for stateless servers)
-EXAM - Elasticash requires application code changes to work
+EXAM - Elasticashe requires application code changes to implement (handle caching)
 
 ## Redshift Architecture
 Redshift is a column based, petabyte-scale, data warehousing product within AWS
-- It's designed for OLAP products within AWS/on-premises to add data to for long term processing, aggregation and trending. (Not OLTP which is row/transaction; inserts/modifies/deletes)
+- It's designed for OLAP (Online Analytical Processing / column based) products within AWS/on-premises to add data to for long term processing, aggregation and trending. (Not OLTP which is row/transaction; inserts/modifies/deletes)
 - Redshift Spectrum. Direct Query S3 without having to load it into redshift in advance
 - Federated Query. Query data in remote data sources
-- Redshift has Enhanced VPC Routing; VPC networking for advanced networking control
-- AZ specific
+- Redshift is server based (not serverless)
+- EXAM: Redshift has Enhanced VPC Routing:
+  -  VPC networking for advanced networking control can be used --> can be controlled using Security Groups, Network Access Contorl Lists and use custom DNS, VPC gateways or other gateways to reach AWS external services.
+- AZ specific (runs in 1 AZ and uses nodes architecture: 1 leader node and different compute nodes)
+- automatic backups to S3 are done to prevent data loss (every 8 hours or every 5GB, whatever happens first)
 
 ## Redshift DR and Resilience
 - RedShift only exists in 1 AZ. There are a number of recovery features:
-- snapshots. Either automatic (1-35 day retention) or manual (no retention period). Since data is backed up to S3, you have S3 protections against failure
--- snapshots can be sent to other regions for disaster recovery with a separate configurable retention period
+- snapshots:
+  - Either automatic (1-35 day retention)
+  - or manual (no retention period).
+  - Since data is backed up to S3, you have S3 protections against failure
+  - snapshots can be sent to other regions for disaster recovery with a separate configurable retention period
 - SERVER based
