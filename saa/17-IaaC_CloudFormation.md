@@ -52,26 +52,26 @@ CreationPolicy, WaitConditions and cfn-signal can all be used together to preven
 - After you define all your conditions, you can associate them with resources and resource properties in the Resources and Outputs sections of a template
 - tl;dr resource create paused until expected signal(s) received
 
-
 ## CloudFormation Nested Stacks
 Nested stacks allow for a hierarchy of related templates to be combined to form a single product
 - A ROOT STACK can contain and create nested stacks .. each of which can be passed parameters and provide back outputs.
-- Nested stacks should be used when the resources being provisioned ****share a lifecycle**** and are related.
+- Nested stacks should be used when the resources being provisioned **share a lifecycle** and are related.
 - Single stacks have resource limits of 500, use nested to overcome this
 - Stacks are isolated; can't easily reference each other. Nested stacked can reference outputs from parents, however
 - Nested stacks for modular-type template re-use. Cross-reference stacks are for resource re-use
 
 ## CloudFormation CloudFormation Cross-Stack References
-- Nested stacks for modular-type template re-use. CloudFormation Cross-Stack References are for resource re-use
--- Outputs in one stack reference logical resources or attributes in that stack
--- Outputs can be exported, and then using the !ImportValue intrinsic function, referenced from another stack.
---- Exports must be UNIQUELY NAMED in region
+Nested stacks for modular-type template re-use. CloudFormation Cross-Stack References are for resource re-use
+- Outputs in one stack reference logical resources or attributes in that stack
+- Outputs can be exported, and then using the !ImportValue intrinsic function, referenced from another stack.
+  - Exports must be UNIQUELY NAMED in region and account
+  - Cross-account exports don't work
 
 ## CloudFormation Stack Sets
 StackSets are a feature of CloudFormation allowing infrastructure to be deployed and managed across MULTIPLE REGIONS and MULTIPLE ACCOUNTS from a single location.
 - Additionally it adds a dynamic architecture - allowing automatic operations based on accounts being added or removed from the scope of a StackSet.
 - StackSets are containers in an admin account which contain stack instances which REFERENCE stacks
--- Stack instances and stacks are in TARGET ACCOUNTS
+  - Stack instances and stacks are in TARGET ACCOUNTS
 - Each stack is 1 region 1 account
 
 ### CFN StackSet Terms
@@ -81,9 +81,11 @@ StackSets are a feature of CloudFormation allowing infrastructure to be deployed
 
 ## CloudFormation Deletion Policy
 With the DeletionPolicy attribute you can preserve or (in some cases) backup a resource when its stack is deleted. You specify a DeletionPolicy attribute for each resource that you want to control. If a resource has no DeletionPolicy attribute, AWS CloudFormation deletes the resource by default.
-- cut the resource loose from the Stack b/c resource deletion can sometimes cause data loss
 - Deletion Policies: Delete, Retain, or Snapshot (if supported)
--- Snapshots continue past stack lifetime
+  - Snapshots continue past stack lifetime
+  - Retain keeps resource, but doesn't manage it
+  - Delete is default
+- DeletionPolicy is only applied when the stack is deleted, not when the stack is updated. If you update a stack, the DeletionPolicy attribute is ignored but the resources are deleted and re-created. This might create data loss.
 
 ## CloudFormation Stack Roles
 Stack roles allow an IAM role to be passed into the stack via PassRole
@@ -95,7 +97,7 @@ CloudFormationInit and cfn-init are tools which allow a desired state configurat
 - Another way to provide config info into EC2 instance
 - Use the AWS::CloudFormation::Init type to include metadata on an Amazon EC2 instance for the cfn-init helper script. If your template calls the cfn-init script, the script looks for resource metadata rooted in the AWS::CloudFormation::Init metadata key. cfn-init supports all metadata types for Linux systems & It supports some metadata types for Windows
 - AWS::CloudFormation::Init which is procedural (you tell it how to bootstrap itself)
--... or CFN-INIT which is where you tell the system WHAT you want and it builds it out (this one is idempotent). It is run ONCE as a part of bootstrapping; if CloudFormation::Init is updated, cfn-init isn't re-run (which is where cfn-hup comes in, see below)
+- ... or CFN-INIT which is where you tell the system WHAT you want and it builds it out (this one is idempotent). It is run ONCE as a part of bootstrapping; if CloudFormation::Init is updated, cfn-init isn't re-run (which is where cfn-hup comes in, see below)
 
 ## CloudFormation cfn-hup
 The cfn-hup helper is a daemon that detects changes in resource metadata and runs user-specified actions when a change is detected (Ie. re-running cfn-init). This allows you to make configuration updates on your running Amazon EC2 instances through the UpdateStack API action.

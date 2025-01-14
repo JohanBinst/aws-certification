@@ -11,7 +11,7 @@ DynamoDB is a NoSQL fully managed Database-as-a-Service (DBaaS) product availabl
 
 ### DynamoDB - Tables
 - Table is a grouping of ITEMS with the same PRIMARY key. Item is like a row in a traditional DB
--- item max size 400KB. item can have all, none, or some of the attibutes/columns in an item(row)
+  - item max size 400KB. item can have all, none, or some of the attibutes/columns in an item(row)
 - Table has two primary keys to pick from:
 1. Partition key. made up of just a partition key
 2. Composite primary key. made up of a partition key and a sort key
@@ -40,17 +40,17 @@ Key elements of READS and WRITES to DynamoDB and step through how the QUERY AND 
 In DynamoDB, each piece of data is replicated into different AZs known as Storage Nodes, and one is the Leader storage node. Leader storage nodes receive the reads/writes and write updates are replicated by leader to other nodes
 - Eventually Consistent Reads. You are not guaranteed to see the most updated data if you're send to a node that hasn't received the replicated new data yet. Cheaper option
 - Strongly Consistent Reads. Always reads from Leader node to guarantee data up to date
-NOT: Not every app can tolerate eventual consistency (some things MUST be accurate)
+NOTE: Not every app can tolerate eventual consistency (some things MUST be accurate)
 
 ### Calculate WCU
 Problem: Need to store 10 items per second, 2.5K average size per item
-1. Round up average size to nearest whole number. 2.5K -> 3
+1. Round up average size to nearest whole number. 2.5kB/1kB -> 3
 2. Multiply item size x # items/sec. 3 x 10 = 30
 = 30 WCU required
 
 ### Calculate RCU
 Problem: Need to retrieve 10 items per second, 2.5K average size per item
-1. Divide Item size / 4 then round up. 2.5K/4K rounded up is 1.
+1. Divide Item size / 4 then round up. 2.5K/4kB rounded up is 1.
 2. Multiply item size x # items/sec. 1 x 10 = 10
 = 10 RCU required for Strongly Consistent. Eventual is 50% cost, so 5RCU required for Eventually Consistent Reads
 
@@ -58,7 +58,7 @@ Problem: Need to retrieve 10 items per second, 2.5K average size per item
 Local Secondary Indexes (LSI) and Global Secondary Indexes (GSI) allow for an alternative presentation of data stored in a base table.
 - Indexes improve the efficiency of operations in DynamoDB
 - LSI allow for alternative Sort Key's (SAME PK) whereas with GSIs you can use alternative PK and SK.
--- LSIs only created at Table creation
+  - LSIs only created at Table creation
 - GSIs can be created any time. 20 limit of GSIs per base table. Uses alternate PK and SK. GSIs are ALWAYS eventually consistent, so to use GSI your tables needs to be able to cope with eventualy consistency
 NOTE: Use GSI as default and LSI only when STRONG consistency index is required
 
@@ -124,5 +124,5 @@ Redshift is a column based, petabyte-scale, data warehousing product within AWS
 ## Redshift DR and Resilience
 - RedShift only exists in 1 AZ. There are a number of recovery features:
 - snapshots. Either automatic (1-35 day retention) or manual (no retention period). Since data is backed up to S3, you have S3 protections against failure
--- snapshots can be sent to other regions for disaster recovery with a separate configurable retention period
+  - snapshots can be sent to other regions for disaster recovery with a separate configurable retention period
 - SERVER based
