@@ -1,7 +1,60 @@
 # 4 VPC
 ## VPC Sizing and structure
+Step through the design choices around VPC design and IP planning. How to design an IP plan for a business; designing a VPC
+
+One of the first things to decide on is IP range; the VPC CIDR.
+- IMPORTANT: This planning is critical and is not easy to change later
+- What size should VPC be? How many services need to fit, each service has an IP, each occupies space in VPC
+- Are there any Networks we can't use, or need to interact with?
+- Be mindful of IP ranges other VPC's used in other cloud env's in on-premise networks. Try to avoid IP ranges that other parties use that you might need to interact with
+- Try to predict the future... How things may change
+- VPC structure - Tiers, Resiliency (Availability) Zones
+
+### What IP ranges? How many networks does A4L need?
+- VPC min /26 (16 IPs). max /16 (65536 IPs)
+- Avoid common ranges to avoid future issues. 10.1 and 10.0 are common, avoid up to 10.10. Start at 10.16 per Cantrill's recommendation
+- How many ranges a business requires? First, how many regions does AWS operate in? Since we're pre-allocating, overestimate for a buffer. A4L we don't really know how many regions they'll operate in, but we can make educated guess then add buffer.
+  - Suggest having at least 2 ranges in each regoin, in each AWS account
+  - Assumed regions for A4L: 3 US, Europe, Australia (5) x2, and 4 AWS accounts. 3US + 1AU + 1EU = 5 Regions, 2 ranges ea. region, total of 10 IP ranges per account. Since there are 4 accounts, 10 ranges x 4 accounts = 40 IP ranges
+
+#### IP Range Review:
+- We're going avoid 10.0 - 10.10 (too commonly used)
+- Start at 10.16 per Cantrill
+- Can't use 10.128 -> 10.255 because Google Cloud uses it
+- Our Range: 10.16 -> 10.127 inclusive
+
+### VPC Sizing
+VPC Sizing Chart: https://imgur.com/a/cJhXTxx
+- Deciding which to use on this chart? Two important Questions:
+  - How many subnets will you need in each VPC?
+  - How many IPs total? How many IPs per subnet?
+
+#### VPC Sizing - How many Subnets?
+- Services inside a VPC use subnets, which are where IP addresses are allocated from
+- VPC Services run from within subnets
+- A subnet is located in ONE availability zone
+
+##### How many Availability Zones will your VPC use?
+- Start with 3 as DEFAULT, per Cantrill. And add at least 1 spare. DEFAULT: AT MINIMUM, always assume 4 AZ's
+- Within VPCs, you also have tiers. Tiers for different types of infrastructure inside VPC; web tier, application tier, database tier... so 3, plus buffer. DEFAULT: assume 4 tiers.
+-- 4 tiers, 4 AZ's. Each tier has a subnet in each AZ: 4x4 = 16 subnets. Using /16 VPC into 16 subnets, results in 1 smaller network ranges, each being /20. If we did /18 VPC prefix, each subnet would be /22
+TOTAL: 16 subnets with /20 prefix
 
 ## Custom VPC's
+- VPCs are regionally isolated and regionally resilient service. Operates from all AZs in that region.
+ - Nothing is allowed IN or OUT of a VPC without explicit permission; provides isolated blast radius; if you have a proble inside a VPC, the impact is limited to that VPC and/or anything connected
+ - Custom VPCs allow for simple or multi-tier; flexible configuration
+ - Custom VPCs also provide Hybrid Networking
+ - When you create VPC, you can pick DEFAULT or DEDICATED tenancy. AKA shared or dedicated hardware
+ -- If you pick DEFAULT tenancy, you can choose on a per resource basis later on when provisioning resources whether it's shared or dedicated hardware
+ -- If you pick DEDICATED tenancy at VPC level, it's locked in. Any resources created inside the VPC have to be on dedicated hardware (cost premium compared to Default)
+ - By default, VPC uses IPv4 private/public IPs. The private CIDR block is main method of IP communication for VPC, & Puclic IPs (when you want make resources public)
+ - VPC allocated ONE mandatory Private IPv4 CIDR Block
+  - Primary Block has two main restrictions: min /28 (16 IPs), max /16 (65,536 IPs)
+  - Optional to add secondary IPv4
+ - Optional: VPC can use IPv6 by assigning /56 IPv6 CIDR to VPC (start appliny IPv6 as default as this is what's being adopted now)
+  - IMPORTANT: You can't pick a block of IP ranges like IPv4. Your range is either allocated by AWS, or customer can use their OWN IPv6 range
+  - IPv6 doesn't have Public/Private concept, the range is all Publicly routable by default
 
 ## VPC subnets
 Subnets are what AWS services run from inside the VPC's and are used to add structure, functionality and resilience to your VPC's.
