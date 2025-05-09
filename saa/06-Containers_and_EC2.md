@@ -31,19 +31,29 @@ docker images
 docker tag IMAGEID YOUR_USER/containerofcats
 docker push YOUR_USER/containerofcats:latest
 
-
 ## ECS - Elastic Container Service - Concepts
 ECS is to containers as EC2 is to virtual machines. A managed container-based compute service
 - Runs in two modes 1. EC2 2. Fargate
 - ECS let's you create a cluster. A Cluster is where you container runs from.
 - Elastic Container Registry is the ECS Container Registry
-- Container Definition: Defines Images and Ports
-- Task Definition: A self contained application; the app as a whole. Stores a Task Role, an IAM Role.
-- Task Role: IAM Role which the TASK assumes
+
+Components:
+- **Container Definition**: Defines Images and Ports -> pointer to run what (image) and where (port). Like Docker container: define image and port
+- **Task Definition**: A self contained application; the app as a whole. Contains
+  - Task Role: IAM Role which the Task assumes
+  - Container definitions to be used
+  - Resources to be usedF
+- **Service Definition**:
+  - Define how task will scale and determines high availability -> define required tasks and restarts
+  - You can even use load balancer in front of service to distribute load evenly across the different tasks inside the service. estarts.
+
+Architecture: Service (optional) contains 1 or more tasks. And task contains 1 or more container definitions.
 
 EXAM: Task Roles are the best practice way giving containers within ECS permission to interact with AWS Resources
-- ECS Service. Config'd with Service Definition: Tells how a task will scale and determines high availability. Can use load balancer. Restarts.
-EXAM: Cluster Modes available within ECS: Network Only (Fargate), EC2 Linux + Networking, EC2 Windows + Networking
+EXAM: Cluster Modes available within ECS:
+- Network Only (Fargate)
+- EC2 Linux + Networking
+- EC2 Windows + Networking
 EXAM: Benefits of containers: Fast to start up, Portable, Lightweight
 
 ## ECS - Cluster Mode
@@ -51,7 +61,6 @@ ECS is capable of running in EC2 mode or Fargate mode. EC2 mode deploys EC2 inst
 - With EC2 mode you pay for the EC2 instances regardless of container usage.
 - Fargate mode uses shared AWS infrastructure, and ENI's which are injected into your VPC.
 - You pay only for container resources used while they are running.
-
 
 The Two Modes when running ECS: EC2 Mode, Fargate Mode
 - Main differentiator: What you manage VS what AWS manages

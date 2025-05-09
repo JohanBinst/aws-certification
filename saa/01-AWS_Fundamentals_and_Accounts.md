@@ -48,16 +48,72 @@
 ### AMI
 AMI (Amazon Machine Image) is a template that contains the software configuration (operating system, application server, and applications) required to launch your instance.
 
-An AMI includes the following:
-  - A template for the root volume for the instance (for example, an operating system, an application server, and applications)
-  - Launch permissions that control which AWS accounts can use the AMI to launch instances
-  - A block device mapping that specifies the volumes to attach to the instance when it's launched (boot volume and additional volumes if any)
+#### AMI includes the following:
+- One or more Amazon Elastic Block Store (Amazon EBS) snapshots, or, for instance-store-backed AMIs, a template for the root volume of the instance (for example, an operating system, an application server, and applications).
+- Launch permissions that control which AWS accounts can use the AMI to launch instances.
+- A block device mapping that specifies the volumes to attach to the instance when it's launched.
+
+#### NOT stored in AMI:
+- Instance Settings
+- Network Settings
+
+EXAM: What is NOT stored in an AMI? Instance and Network Settings
+
+Root Volume: AMI contains boot volume of instance, boots O/S
 
 ### S3
+EXAM: Bucket name must be Globally Unique. Error where you can't create a bucket? Prolly not a unique name
+
+EXAM: More bucket name restrictions: 3-63 characters, all lowercase, no underscores, not formatted like IP addresses
+
+EXAM: Bucket limits: soft limit of 100 buckets per AWS account, hard limit of 1000 buckets (hard limit increased by connecting with Support). If you have more than 1000 users, you can't use 1 bucket per user, but you can use prefixes within a bucket to let multiple users use one bucket.
+
+EXAM: Unlimited Objects in a bucket, ranging from 0 bytes to 5TB in size
+
+EXAM: Object Structure: Key = Name, Value = Data
+
+#### S3 Patterns and Anti-Patterns
+- S3 is an Object Store system, NOT File System and NOT Block System
+- S3 has no File System, it's flat. It's not Block storage, so you can't mount it as K:\ or /images
+- Great for 'offload'
+- S3 should be your default INPUT and/or OUTPUT to MANY AWS products
+
+EXAM: Where to store data in AWS? S3 should be default answer
+
+#### QUIZ: What is true of Simple Storage Service (S3)
+- S3 is an AWS Public Service
+- S3 is an Object Storage System
+- Buckets can store an unlimited amount of data
 
 ### CloudFormation
 
+#### What makes a template? Components:
+- All templates have a list of resources. This is the only mandatory item
+- Description. Free text field for the author to provide details on template. (If you have AWSTemplateFormatVersion, Description MUST follow it in YAML/JSON)
+- Metadata. Can control the UI (groupings, order, labels, descriptions), as well as other things (to be covered later)
+- Parameters. Value parameters, default values, etc.
+- Mappings. Create lookup tables.
+- Conditions. Allows decision making in the template. Step 1 create condition, Step 2 use condition
+- Outputs. Once template is finished it can present outputs like admin or setup adddress, instance ID
+
+EXAM: In a CFN Template, if you have the AWSTemplateFormatVersion item, the Description MUST follow directly after in your YAML/JSON template file
+
 ### CloudWatch
+CloudWatch is a core supporting service within AWS which provides metric, log and event management services. Collects / manages operational data on your behalf.
+
+### Three jobs:
+1. Metrics. AWS Products, Apps, on-premises. Some metrics require extra installed CloudWatch Agent
+2. CloudWatch Logs. AWS Products, Apps, on-premises. Almost anything logged can be ingested by Logs
+3. CloudWatch Events. AWS Services & Schedules. If an AWS service does something, this will generate an event that can perform another action. Or you can set up a chrono-repeating event through here.
+
+### Core Concepts
+- Namespace: Container for monitoring data. There is a naming ruleset for naming. All AWS data foes into a special namespace AWS/[service]
+- Metric: Collection of related data points in a time-ordered structure
+- Datapoints: A single unit of a metric; consists of timestamp and a value
+- Dimensions: Generally, a metric is a collection (Eg. CPU utilization comes from all EC2 instances, not just one). You can use dimensions to single out resources to see their individual metrics. "Separate datapoints for different things or perspectives within the same metric"
+- Alarms: Taking actions based on metrics. States: OK or ALARM (ALARM can be SNS Notification or Action), and INSUFFICIENT DATA (when there's not yet enough data)
+
+
 
 ### Route 53 Fundamentals
 AWS's managed DNS product. Global service, single database; no need to pick region in console UI. Globally resilient.
@@ -88,19 +144,19 @@ Search / Nav to R53 console > Registered Domains > click "Register Domains" > Se
 
 EXAM: CNAMEs cannot point directly at an IP address, only other names.
 
-QUIZ: What is a CloudFormation Logical Resource?
+- QUIZ: What is a CloudFormation Logical Resource?
 A resource defined in a CFN Template
-QUIZ: How many DNS Root Servers Exist?
+- QUIZ: How many DNS Root Servers Exist?
 13
-QUIZ: Who manages DNS Root Servers?
+- QUIZ: Who manages DNS Root Servers?
 12 Large Organizations
-QUIZ: Who manages DNS Root Zone?
+- QUIZ: Who manages DNS Root Zone?
 IANA
-QUIZ: A Record = IPv4, AAAA Record = IPv6
-QUIZ: DNS Record type is how the root zone delegates control of .org to the .org registry
-QUIZ: Which type of organization maintains the zones for a TLD (e.g .ORG)? Registry
-QUIZ: Which type of organization has relationships with the .org TLD zone manager allowing domain registration? Registrar
-QUIZ: How many subnets in a default VPC? Equal to the number of Availability Zones in the region the VPC in located in
+- QUIZ: A Record = IPv4, AAAA Record = IPv6
+- QUIZ: DNS Record type is how the root zone delegates control of .org to the .org registry
+- QUIZ: Which type of organization maintains the zones for a TLD (e.g .ORG)? Registry
+- QUIZ: Which type of organization has relationships with the .org TLD zone manager allowing domain registration? - Registrar
+- QUIZ: How many subnets in a default VPC? Equal to the number of Availability Zones in the region the VPC in located in
 
 #### TTL - Time To Live
 Numeric value that can be set on DNS records. Getting result from authoritative source is an authoritative answer. If a 3600 TTL value is set, results of query are stored in resolver server for 3600 seconds (1 hour), creating a non-authoritative answer for delivery -- during this time, another query would receive this cached non-authoritative answer.

@@ -48,6 +48,10 @@ Authentication = prove to IAM that Principal is who he claims to be. IAM users c
   - Username and password
   - Access keys
 
+*** EXAM: MAX 5,000 IAM Users per account ***
+*** EXAM: IAM User can be a member of 10 groups maximum ***
+System with more than 5,000 identities? Can't use IAM user for each identity. IAM Roles & Identity Federation fixes this (more later)
+
 ### ARN
 Amazon Resource Names (ARNs) are used to ***uniquely identify AWS resources within any AWS account.***
 
@@ -61,9 +65,9 @@ ex: arn:aws:s3:::examplebucket (refrences the S3 bucket)
 ex: arn:aws:s3:::examplebucket/* (refrences the objects in the S3 bucket)
 --> difference between the bucket and the objects in the bucket is important for policies
 
-Diffrence between :: and :*:
-- :: omit the resource/service name because it is not needed to uniquely identify the resource. eg S3 bucket names are globally unique, so no need to define the region or account id in the bucket arn.
-- :*: wildcard but can't be omitted, all resources of the type are included.
+Diffrence between `::` and  `:*:`
+- `::` omit the resource/service name because it is not needed to uniquely identify the resource. eg S3 bucket names are globally unique, so no need to define the region or account id in the bucket arn.
+- `:*:` wildcard but can't be omitted, all resources of the type are included.
 
 ## IAM Groups
 IAM groups are containers for IAM users, they exist to make organizing large sets of IAM users easier. Groups are not identities, they are a way to attach policies to multiple users at once. You can't login using a group.
@@ -124,6 +128,8 @@ AWS Integrations: EC2, Lambda, CloudTrail, VPC Flow Logs, Route53, etc.
 - on log group you apply configuration settings like retention policy and permissions. These settings then apply to all log streams in the log group.
 - on log group you can also create metric filters and alarms. These settings then apply to all log streams in the log group. A metric filter increments a metric when a log event matches a filter pattern. And a metric can have associated alarms, these alarms can be used to either notify the admin or trigger an action by other AWS services or external system.
 
+*** EXAM: CloudWatch is a REGIONALLY resilient service ***
+
 ## CloudTrail
 Logs API calls/activities as CloudTrail events.
 It is enabled by default in AWS accounts and stores events for 90 days in Event History.
@@ -152,3 +158,44 @@ Logging is NOT real time, there is a delay of a few minutes. If question on exam
 It can be configured to store data indefinitely in S3 or CloudWatch Logs.
 
 ## AWS Control Tower
+WS Control Tower offers a straightforward way to set up and govern an AWS multi-account environment, following prescriptive best practices. AWS Control Tower orchestrates the capabilities of several other AWS services, including AWS Organizations, AWS Service Catalog, and AWS IAM Identity Center (successor to AWS Single Sign-On), to build a landing zone in less than an hour. Resources are set up and managed on your behalf.
+
+AWS Control Tower orchestration extends the capabilities of AWS Organizations. To help keep your organizations and accounts from drift, which is divergence from best practices, AWS Control Tower applies preventive and detective controls (guardrails). For example, you can use guardrails to help ensure that security logs and necessary cross-account access permissions are created, and not altered.
+- Think of Control Tower as another evolution of AWS Organizations
+
+### CT: Parts of Control Tower
+- ***Landing Zone:*** Multi-account environment (what most people interact with). SSO/ID Fed, Centralized Logging, Auditing
+- ***Guard Rails:*** Detect/Mandate rules/standards across all accounts
+- ***Account Factory:*** Automates and standardizes new account creation
+- ***Dashboard:*** Single page oversight of entire environment/org
+
+#### CT: Landing Zone
+A well-architected multi-account environment. Home Region is the one you deploy into and is always available.
+- Built with AWS Orgz, Config, CloudFormation
+- Security Organizational Unit (OU): Log Archive and Audit Accounts (CloudTrail / Config Logs)
+- Sandbox OU: For testing and for less rigid security situations
+- IAM ID Center (prev. AWS SSO): SSO, multiple accounts, ID Federation (using on-premise identity stores)
+- Monitoring and Notifications: CloudWatch and SNS
+- Service Catalog: End User account provisioning
+
+#### CT: Guard Rails
+- Rules for multi-account governance.
+- Three types: Mandatory, Strongly Recommended, Elective
+- GR functions in 2 Ways:
+-- Preventative: Stop you from doing things (AWS Org SCP). Enforced or not enabled. Eg. Allow/deny regions, disallow bucket policy changes (prevent things from happening)
+-- Detective: Compliance checks (AWS Config Rules) for maintaining Best Practices. Types: Clear, In Violation, Not Enabled. Eg. Detect / confirm if CloudTrail has been enabled on  your account (identify things happening)
+
+#### CT: Account Factory
+- Automated account provisioning. Cloud Admins or End Users (w/ appropriate permissions)
+- Guardrails automatically added
+- Give admin permissions to a named user (IAM ID)
+- Standard Account & Network standard configuration. Eg. IP addressing using VPC
+- Allows accounts to be closed or repurposed
+- Can be fully integrated with a business's Software Development Lifecycle
+
+## AWS Control Tower (continued)
+- Under Control Tower, AWS Organizations creates two Organizational Units (OU): Foundational/Security and Sandbox OU's
+- Within each Foundational OU and Security OU, two accounts are created in each: Audit and Log Archive accounts
+- Account Factory: Create/configure/delete accounts using Templates: Account Baseline (template) and Network Baseline (template)
+- For Guardrails, AWS uses AWS Congfig and SCP
+- Drift: Divergence from best practices

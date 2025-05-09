@@ -171,9 +171,9 @@ What are directories? Identity and asset info storage. Stores objects with struc
 - use when needing to proxy on-premise AD service to the cloud because only 1 service in the cloud requires AD -> proxy on-premise AD to the VPC through VPN or Direct Connect. Service in VPC that needs AD connects to AD connector (proxy).
 
 ### When to pick one of the 3 ADs?
-Simple AD -  The default. Simple reqs. A directory in AWS
-Microsoft AD - Apps in AWS which require actual implementation of MS AD, or you need to TRUST AD Directory Service already running on-prem
-AD Connector - To use AWS services that require a directory without actually storing any directory info (username, passwords etc) in the cloud and you have an Active Directory on-premise, use AD connector
+- Simple AD -  The default. Simple reqs. A directory in AWS
+- Microsoft AD - Apps in AWS which require actual implementation of MS AD, or you need to TRUST AD Directory Service already running on-prem
+- AD Connector - To use AWS services that require a directory without actually storing any directory info (username, passwords etc) in the cloud and you have an Active Directory on-premise, use AD connector
 
 ## DataSync
 AWS DataSync is a product which can orchestrate the movement of large scale data (amounts or files) from on-premises NAS/SAN into AWS or vice-versa
@@ -227,7 +227,7 @@ EXAM - supports transferring data over the following protocols: SFTP, FTPS, and 
 - Identities can be handeled by AWS Transfer Family or Directory or Custom (Lambda/API Gateway)
 - Managed File Transfer Workflows (MFTW) - serverless file workflow engine (for tagging and stuff)
 - Transfer Family can be accessed trough endpoints:
-   - public: public endpoint (SFTP only) -> can't control who can access it because is public 
+   - public: public endpoint (SFTP only) -> can't control who can access it because is public
    - VPC-internet: SFTP, FTPS and AS2. Accessible from public internet through Elastic IP or via Direct connect or VPN (or within VPC)
    - VPC-Internal: SFTP, FTPS, A2 and FTP (unecrypted). Accessible only within VPC or via Direct Connect or VPN
 - Using FTP? Since not secure, you can only use FTP protocol within VPC (not public)
