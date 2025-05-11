@@ -11,13 +11,13 @@ The Elastic File System (EFS) is an AWS managed implementation of NFS (NFSv4) wh
 - Uses POSIX permissions (a linux thing)
 
 - EXAM: EFS is Linux ONLY
-- EXAM: 2 performance modes: 
+- EXAM: 2 performance modes:
     1. General Purpose (default): latency intesive use cases, web servers, Content Management Systems (CMS), home directories or general file servers
     2. Max I/O : high IOPS but tradeoff is increased latency. Use for Big Data media processing
-- EXAM: 2 throughput modes: 
+- EXAM: 2 throughput modes:
     1. Bursting : throughput scales with file system size: the more data you store the more capacity you need and throughput performance increased with size.
     2. Provisioned : pay for fixed throughput independant of filesharing size
-- EXAM: 2 storage classes: 
+- EXAM: 2 storage classes:
     1. Standard (default)
     2. Infrequent Access (IA) - Lifecycle policies can be used with these
 
@@ -72,14 +72,13 @@ EXAM - Key words to look for:
 - integrates with Directory Service and YOUR OWN directory
 
 ## FSx For Lustre
-FSx for Lustre is a managed file system which uses the FSx product designed for high performance computing on Linux clients (POSIX)
-- It delivers extreme performance for scenarios such as BIG DATA, MACHINE LEARNING and FINANCIAL MODELING
+FSx for Lustre is a managed file system which uses the FSx product designed for high performance computing on Linux clients, uses POSIX permissions.
+- It delivers extreme performance (100 GB/s, sub milisecond latency) for scenarios such as BIG DATA, MACHINE LEARNING and FINANCIAL MODELING
  - FSx for Lustre is a managed Lustre high compute system. Linux clients (POSIX)
-- Two deploment types: Persistent or Scratch
- - Scratch: highliy optimized for short-term. No replication and fast. not HA
- - Persistent: Longer term, high avail in one AZ, self-healing
+- Two deploment types: Persistent(HA) or Scratch(performance)
+ - Scratch: highliy optimized for short-term. No replication and fast. Is not highly available
+ - Persistent: Longer term, High Availability in one AZ, self-healing
 - Accessible over VPN or Direct Connect
 EXAM - If Lustre, POSIX mentioned... FSx for Lustre, ML/big data/fin-modeling, SageMaker
 
 ## FSx vs EFS
-

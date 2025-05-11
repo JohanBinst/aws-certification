@@ -14,7 +14,7 @@
 | 10.| CloudFormation IaaC                                  |  [x]  |
 | 11.| Route53 and CloudFront                               |  [x]  |
 | 12.| SQL Databases                                        |  [x]  |
-| 13.| Advanced Storage                                     |  [ ]  |
+| 13.| Advanced Storage                                     |  [x]  |
 | 14.| Scaling, Load Balancing & HA                         |  [x]  |
 | 15.| AWS CLI, Dev Tools & CICD                            |  [ ]  |
 | 16.| Application Services, Event Driven & Serverless      |  [x]  |
@@ -22,5 +22,4 @@
 | 18.| API's & API Gateway In-Depth                         |  [ ]  |
 | 19.| NOSQL Database & DynamoDB                            |  [ ]  |
 | 20.| Elastic Beanstalk In-Depth                           |  [ ]  |
-|TOTAL|                                                     | 13/20 |
-
+|TOTAL|                                                     | 14/20 |
