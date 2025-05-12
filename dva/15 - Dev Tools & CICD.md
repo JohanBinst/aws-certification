@@ -58,3 +58,62 @@ Architecture :
   - AWS Parameter Store
   - AWS Secrets Manager
 - Artifacts part of file: Define what to store and where to store it
+
+## AWS CodeDeploy
+CodeDeploy is a deployment service that automates application deployments
+It can deploy to: 
+- Amazon EC2 instances
+- on-premises instances
+- serverless Lambda functions
+- Amazon ECS services
+
+It can deploy: 
+- code
+- web apps
+- configurations
+- EXE files
+- packages
+- scripts
+- media
+- and more
+
+Code Deploy
+- Integrates with other AWS services
+- CodeDeploy agent is required when deploying on EC2 instances or on-premise instances
+- Appspec.yaml (YAML or JSON formatted) file is used to define deployments
+
+### Appspec.yaml file
+File used to manage deployments: config + lifecycle event hooks
+Has 3 sections:
+- Files: for EC2 and on-premise instances -> which files should be installed on the instance during deploy
+- Resources: for ECS and Lambda applications/code, gives info to run on these targets
+    - lamdba: containts name, alias, current version and target version
+    - ECS: task definition, container, port details
+- Permissions: for EC2 and on-premise instances
+
+Has also Lifecycle event hooks :
+1. **ApplicationStop**: is executed before the deployment is started, use to gracefully stop application and/or remove any currently installed packages in preparation for the actual deployment
+2. **DownloadBundle**: Durring this phase CodeDeploy copies the application to a temporary location before installing
+3. **BeforeInstall**: pre-installation task, encrypt or decrypt files
+4. **Install**: done by CodeDeploy agent, can't be modified. App files are copied from temp folder to actual instance
+5. **AfterInstall**
+6. **ApplicationStart**
+7. **ValidateService**: Allows CodeDeploy to verify if deployment has been successfull.
+
+Define scripts that have to be run when certain event occur: (e.g. DownloadBundle, Install) in lifecycle of application
+
+- EXAM: remember order of lifecyle hooks
+- EXAM: remember ApplicationStop and ValidateService use cases
+
+## ECR (Elastic Container Registry)
+- Managed container image service -> like Docker hub
+- Each AWS account has public and private registry:
+  - public = everyone has read access, write requires extra permissions
+  - private = permissions required for read and write actions
+- Each registry can have many repositories, and each repository can have many images
+- Uses IAM for permissions
+- Image scanning available: basic or enhanced (using inspector)
+- Get near real-time metrics using CloudWatch for auth, push or pull metrics
+- API actions -> use CloudTrail
+- Events -> use EventBridge : e.g. when new version of image is released sent notification or update instances using this image
+- Supports cross-region or cross-account replication of images

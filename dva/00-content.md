@@ -16,7 +16,7 @@
 | 12.| SQL Databases                                        |  [x]  |
 | 13.| Advanced Storage                                     |  [x]  |
 | 14.| Scaling, Load Balancing & HA                         |  [x]  |
-| 15.| AWS CLI, Dev Tools & CICD                            |  [ ]  |
+| 15.| AWS CLI, Dev Tools & CICD                            |  [x]  |
 | 16.| Application Services, Event Driven & Serverless      |  [x]  |
 | 17.| AWS Lambda In-Depth                                  |  [ ]  |
 | 18.| API's & API Gateway In-Depth                         |  [ ]  |
